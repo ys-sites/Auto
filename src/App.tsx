@@ -682,7 +682,7 @@ const Financing = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left lg:pt-0"
+            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left lg:pt-0 md:mb-12 lg:mb-0"
           >
           <div className="inline-block px-3 py-1 glass rounded text-[10px] sm:text-xs font-bold uppercase tracking-widest crimson-text shadow-[0_0_20px_rgba(220,38,38,0.2)]">
             {t('hero.tag')}
@@ -743,7 +743,7 @@ const Financing = () => {
 
       {/* Stats Bar */}
       <SectionReveal>
-        <section className="bg-black/60 backdrop-blur-xl pt-2 pb-8 sm:py-24 md:py-32 lg:py-20 border-y border-white/10">
+        <section className="bg-black/60 backdrop-blur-xl pt-2 pb-8 sm:py-24 md:pt-48 md:pb-32 lg:py-20 border-y border-white/10">
           <div className="container mx-auto px-4 sm:px-6 flex flex-wrap justify-center lg:justify-between items-center gap-8 sm:gap-12 lg:gap-0">
             {[
               { label: 'Vehicles Sold', value: 4500, suffix: '+' },
