@@ -232,6 +232,90 @@ const Footer = () => {
   );
 };
 
+const testimonials = [
+  {
+    name: "Alexander Vance",
+    role: "Collector",
+    quote: "The acquisition of my 911 GT3 RS was handled with absolute discretion and perfection. AutoElite's protocol is unparalleled in the industry.",
+    asset: "Porsche 911 GT3 RS"
+  },
+  {
+    name: "Sarah Jenkins",
+    role: "Private Client",
+    quote: "From the initial consultation to the white-glove arrival of my Range Rover in Manhattan, the experience was flawlessly executed.",
+    asset: "Range Rover Autobiography"
+  },
+  {
+    name: "Dr. Marcus Wei",
+    role: "Enthusiast",
+    quote: "Their 160-point vetting process gave me the confidence to purchase a vintage Ferrari sight-unseen. The car exceeded every expectation.",
+    asset: "Ferrari Roma"
+  }
+];
+
+const TestimonialSection = () => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="py-24 sm:py-40 relative border-t border-white/5 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.05)_0%,transparent_70%)] pointer-events-none" />
+      <div className="container mx-auto px-4 sm:px-10 relative z-10">
+        <SectionReveal className="text-center mb-16 sm:mb-24">
+          <h2 className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em] mb-4">Client Protocol</h2>
+          <h3 className="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-[0.95] italic">
+            Trusted by the <br/><span className="crimson-text">Elite</span>
+          </h3>
+        </SectionReveal>
+
+        <div className="max-w-5xl mx-auto relative h-[400px] sm:h-[450px] flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 w-full flex flex-col items-center text-center p-8 sm:p-16 border-white/5 bg-white/[0.02] backdrop-blur-3xl rounded-[2rem] sm:rounded-[4rem] border justify-center shadow-[0_50px_100px_rgba(0,0,0,0.5)]"
+            >
+              <div className="flex gap-2 mb-8 text-crimson">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <svg key={s} xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-6 sm:w-6 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                ))}
+              </div>
+              <p className="text-xl sm:text-3xl md:text-5xl text-white font-medium leading-[1.2] italic tracking-tight mb-12 max-w-4xl">
+                "{testimonials[index].quote}"
+              </p>
+              <div>
+                <p className="text-lg sm:text-2xl font-black text-white uppercase tracking-widest mb-1">{testimonials[index].name}</p>
+                <p className="text-[10px] sm:text-xs text-white/40 font-bold uppercase tracking-[0.3em]">
+                  <span className="crimson-text">{testimonials[index].role}</span> • {testimonials[index].asset}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="absolute -bottom-12 sm:-bottom-16 flex gap-4">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIndex(i)}
+                className={`w-12 sm:w-16 h-1 rounded-full transition-all duration-500 ${index === i ? 'bg-crimson scale-y-150' : 'bg-white/10 hover:bg-white/30'}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const ContactSection = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const { t } = useLanguage();
@@ -905,6 +989,7 @@ const Financing = () => {
         </SectionReveal>
       </section>
 
+      <TestimonialSection />
       <ContactSection />
     </div>
   );
