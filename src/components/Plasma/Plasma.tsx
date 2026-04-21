@@ -102,6 +102,10 @@ export const Plasma = ({
 
   useEffect(() => {
     if (!containerRef.current) return;
+    
+    // Hard check for mobile ratio - do not initialize or run plasma on phone
+    if (window.innerWidth < 640) return;
+
     const containerEl = containerRef.current;
 
     const useCustomColor = color ? 1.0 : 0.0;

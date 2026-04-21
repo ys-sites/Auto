@@ -308,72 +308,72 @@ const ContactSection = () => {
               fillOpacity={0}
               className="backdrop-blur-3xl border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.5)]"
             >
-              <div className="p-12 lg:p-20">
+              <div className="p-6 sm:p-10 lg:p-20">
                 {status === 'success' ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.9 }} 
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center space-y-8"
+                    className="text-center space-y-6 sm:space-y-8"
                   >
-                    <div className="w-24 h-24 crimson-bg rounded-full flex items-center justify-center mx-auto shadow-[0_0_50px_rgba(220,38,38,0.4)]">
-                       <ShieldCheck className="w-12 h-12 text-white" />
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 crimson-bg rounded-full flex items-center justify-center mx-auto shadow-[0_0_50px_rgba(220,38,38,0.4)]">
+                       <ShieldCheck className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
                     </div>
-                    <h4 className="text-4xl font-black text-white uppercase tracking-tighter">{t('contact.form.success_title')}</h4>
-                    <p className="text-white/50 text-lg">{t('contact.form.success_desc')}</p>
-                    <Button onClick={() => setStatus('idle')} variant="outline" className="border-white/10 text-white rounded-none uppercase font-black tracking-widest h-14 px-10">{t('contact.form.new_inquiry')}</Button>
+                    <h4 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tighter">{t('contact.form.success_title')}</h4>
+                    <p className="text-white/50 text-base sm:text-lg">{t('contact.form.success_desc')}</p>
+                    <Button onClick={() => setStatus('idle')} variant="outline" className="border-white/10 text-white rounded-none uppercase font-black tracking-widest h-12 sm:h-14 px-8 sm:px-10">{t('contact.form.new_inquiry')}</Button>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-12">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-                      <div className="space-y-4">
-                        <label className="text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.name')}</label>
-                        <Input name="fullName" className="bg-transparent border-0 border-b border-white/10 rounded-none h-14 px-0 focus:border-crimson transition-all text-xl font-bold text-white placeholder:text-white/10" required />
+                  <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-6 sm:gap-y-10">
+                      <div className="space-y-2">
+                        <label className="text-[10px] sm:text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.name')}</label>
+                        <Input name="fullName" className="bg-transparent border-0 border-b border-white/10 rounded-none h-10 sm:h-14 px-0 focus:border-crimson transition-all text-lg sm:text-xl font-bold text-white placeholder:text-white/10" required />
                       </div>
-                      <div className="space-y-4">
-                        <label className="text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.email')}</label>
-                        <Input name="emailProfile" type="email" className="bg-transparent border-0 border-b border-white/10 rounded-none h-14 px-0 focus:border-crimson transition-all text-xl font-bold text-white" required />
+                      <div className="space-y-2">
+                        <label className="text-[10px] sm:text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.email')}</label>
+                        <Input name="emailProfile" type="email" className="bg-transparent border-0 border-b border-white/10 rounded-none h-10 sm:h-14 px-0 focus:border-crimson transition-all text-lg sm:text-xl font-bold text-white" required />
                       </div>
-                      <div className="space-y-4">
-                        <label className="text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.phone')}</label>
-                        <Input name="phoneNumber" className="bg-transparent border-0 border-b border-white/10 rounded-none h-14 px-0 focus:border-crimson transition-all text-xl font-bold text-white" />
+                      <div className="space-y-2">
+                        <label className="text-[10px] sm:text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.phone')}</label>
+                        <Input name="phoneNumber" className="bg-transparent border-0 border-b border-white/10 rounded-none h-10 sm:h-14 px-0 focus:border-crimson transition-all text-lg sm:text-xl font-bold text-white" />
                       </div>
-                      <div className="space-y-4">
-                        <label className="text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.interests')}</label>
+                      <div className="space-y-2">
+                        <label className="text-[10px] sm:text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.interests')}</label>
                         <div className="relative">
-                          <select name="interests" className="w-full bg-transparent border-0 border-b border-white/10 rounded-none h-14 px-0 focus:border-crimson transition-all text-xl font-black outline-none text-white appearance-none cursor-pointer">
+                          <select name="interests" className="w-full bg-transparent border-0 border-b border-white/10 rounded-none h-10 sm:h-14 px-0 focus:border-crimson transition-all text-lg sm:text-xl font-black outline-none text-white appearance-none cursor-pointer">
                             <option className="bg-charcoal text-base font-sans" value="Acquisition Inquiry">{t('contact.form.options.acquisition')}</option>
                             <option className="bg-charcoal text-base font-sans" value="Sell Vehicle">{t('contact.form.options.sell')}</option>
                             <option className="bg-charcoal text-base font-sans" value="Capital / Financing">{t('contact.form.options.financing')}</option>
                             <option className="bg-charcoal text-base font-sans" value="Consignment">{t('contact.form.options.consignment')}</option>
                             <option className="bg-charcoal text-base font-sans" value="Service">Service</option>
                           </select>
-                          <div className="absolute right-0 bottom-4 pointer-events-none text-white/20">
-                             <Search className="w-5 h-5 rotate-90" />
+                          <div className="absolute right-0 bottom-2 sm:bottom-4 pointer-events-none text-white/20">
+                             <Search className="w-4 h-4 sm:w-5 sm:h-5 rotate-90" />
                           </div>
                         </div>
                       </div>
                       
-                      <div className="space-y-4 pt-4 md:col-span-2">
-                        <label className="text-[12px] font-black text-white/30 uppercase tracking-[.4em]">Vehicle (Optional)</label>
+                      <div className="space-y-2 pt-2 sm:pt-4 md:col-span-2">
+                        <label className="text-[10px] sm:text-[12px] font-black text-white/30 uppercase tracking-[.4em]">Vehicle (Optional)</label>
                         <div className="relative">
-                          <select name="vehicle" className="w-full bg-transparent border-0 border-b border-white/10 rounded-none h-14 px-0 focus:border-crimson transition-all text-xl font-black outline-none text-white appearance-none cursor-pointer">
+                          <select name="vehicle" className="w-full bg-transparent border-0 border-b border-white/10 rounded-none h-10 sm:h-14 px-0 focus:border-crimson transition-all text-lg sm:text-xl font-black outline-none text-white appearance-none cursor-pointer">
                             <option className="bg-charcoal text-base font-sans" value="">-- None --</option>
                             {carData.map(car => (
                               <option key={car.id} className="bg-charcoal text-base font-sans" value={`${car.make} ${car.model}`}>{car.make} {car.model}</option>
                             ))}
                           </select>
-                          <div className="absolute right-0 bottom-4 pointer-events-none text-white/20">
-                             <Search className="w-5 h-5 rotate-90" />
+                          <div className="absolute right-0 bottom-2 sm:bottom-4 pointer-events-none text-white/20">
+                             <Search className="w-4 h-4 sm:w-5 sm:h-5 rotate-90" />
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-6 pt-6">
-                      <label className="text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.message')} (OPTIONAL)</label>
-                      <textarea name="initialMessage" placeholder={t('contact.form.message')} className="w-full bg-transparent border-0 border-b border-white/10 rounded-none min-h-[140px] focus:border-crimson transition-all text-xl font-bold outline-none text-white p-0 resize-none" />
+                    <div className="space-y-3 sm:space-y-6 pt-4 sm:pt-6">
+                      <label className="text-[10px] sm:text-[12px] font-black text-white/30 uppercase tracking-[.4em]">{t('contact.form.message')} (OPTIONAL)</label>
+                      <textarea name="initialMessage" placeholder={t('contact.form.message')} className="w-full bg-transparent border-0 border-b border-white/10 rounded-none min-h-[80px] sm:min-h-[140px] focus:border-crimson transition-all text-lg sm:text-xl font-bold outline-none text-white p-0 resize-none" />
                     </div>
-                    <Button type="submit" disabled={status === 'loading'} className="w-full crimson-bg py-10 rounded-none font-black text-2xl uppercase tracking-tighter hover:bg-red-700 transition-all hover:scale-[1.02] shadow-[0_20px_50px_rgba(220,38,38,0.3)] border-none">
+                    <Button type="submit" disabled={status === 'loading'} className="w-full crimson-bg py-6 sm:py-10 rounded-none font-black text-xl sm:text-2xl uppercase tracking-tighter hover:bg-red-700 transition-all hover:scale-[1.01] shadow-[0_20px_50px_rgba(220,38,38,0.3)] border-none">
                       {status === 'loading' ? t('contact.form.submit').replace('RESERVE NOW', '...') : t('contact.form.submit')}
                     </Button>
                   </form>
@@ -570,26 +570,26 @@ const SellYourCar = () => {
         ) : (
           <>
             <h2 className="text-2xl sm:text-3xl font-black text-white mb-8 text-center uppercase tracking-tight">{t_page.form_title}</h2>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
-              <div className="md:col-span-1 grid grid-cols-1 xs:grid-cols-2 gap-4">
-                <Input name="vehicleMake" placeholder={t_page.placeholders.make} required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
-                <Input name="vehicleModel" placeholder={t_page.placeholders.model} required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
+              <div className="md:col-span-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Input name="vehicleMake" placeholder={t_page.placeholders.make} required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
+                <Input name="vehicleModel" placeholder={t_page.placeholders.model} required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
               </div>
-              <Input name="vehicleYear" placeholder={t_page.placeholders.year} required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
-              <Input name="vehicleMileage" placeholder={t_page.placeholders.mileage} required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
-              <Input name="vehiclePrice" placeholder={t_page.placeholders.price} required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
+              <Input name="vehicleYear" placeholder={t_page.placeholders.year} required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
+              <Input name="vehicleMileage" placeholder={t_page.placeholders.mileage} required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
+              <Input name="vehiclePrice" placeholder={t_page.placeholders.price} required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
               
-              <div className="md:col-span-2 space-y-6 sm:space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
-                  <Input name="fullName" placeholder="Your Full Name" required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
-                  <Input name="emailProfile" type="email" placeholder="Your Email Address" required className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
+              <div className="md:col-span-2 space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
+                  <Input name="fullName" placeholder="Your Full Name" required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
+                  <Input name="emailProfile" type="email" placeholder="Your Email Address" required className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
                 </div>
-                <Input name="phoneNumber" placeholder="Phone Number" className="bg-white/5 border-white/10 py-5 sm:py-7 rounded-none font-bold text-white focus:border-crimson" />
+                <Input name="phoneNumber" placeholder="Phone Number" className="bg-white/5 border-white/10 py-3 sm:py-5 rounded-none font-bold text-white focus:border-crimson h-10 sm:h-12" />
                 <input type="hidden" name="interests" value="Sell Vehicle" />
-                <textarea name="initialMessage" placeholder={t_page.placeholders.more} className="w-full bg-white/5 border border-white/10 p-4 sm:p-6 min-h-[120px] sm:min-h-[150px] outline-none text-white font-bold focus:border-crimson transition-all" />
+                <textarea name="initialMessage" placeholder={t_page.placeholders.more} className="w-full bg-white/5 border border-white/10 p-3 sm:p-5 min-h-[100px] sm:min-h-[120px] outline-none text-white font-bold focus:border-crimson transition-all text-sm sm:text-base" />
               </div>
 
-              <Button type="submit" disabled={status === 'loading'} className="md:col-span-2 py-6 sm:py-8 crimson-bg text-white font-black text-base sm:text-lg uppercase tracking-tight rounded-none hover:bg-red-700 transition-all shadow-xl border-none">
+              <Button type="submit" disabled={status === 'loading'} className="md:col-span-2 py-4 sm:py-6 crimson-bg text-white font-black text-sm sm:text-base uppercase tracking-widest rounded-none hover:bg-red-700 transition-all shadow-xl border-none">
                  {status === 'loading' ? 'SUBMITTING...' : t_page.btn}
               </Button>
             </form>
@@ -650,10 +650,10 @@ const Financing = () => {
                   </div>
                 </div>
                 <Button 
-                  className="w-full py-8 sm:py-10 crimson-bg text-white font-black text-xl sm:text-2xl uppercase tracking-tighter rounded-none shadow-[0_20px_50px_rgba(220,38,38,0.3)] hover:scale-[1.05] transition-all border-none" 
+                  className="w-full py-5 sm:py-8 crimson-bg text-white font-black text-lg sm:text-2xl uppercase tracking-widest rounded-none shadow-[0_20px_50px_rgba(220,38,38,0.3)] hover:scale-[1.01] transition-all border-none" 
                   asChild
                 >
-                   <Link to="/#contact">START APPLICATION</Link>
+                   <Link to="/#contact">{language === 'fr' ? 'DÉMARRER LA DEMANDE' : 'START APPLICATION'}</Link>
                 </Button>
              </div>
           </SectionReveal>
@@ -671,7 +671,7 @@ const Financing = () => {
       {/* Hero */}
       <section className="h-[calc(100vh-64px)] sm:h-[calc(100vh-80px)] min-h-[500px] sm:min-h-[700px] flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
         <div className="absolute inset-0 z-0 pointer-events-none">
-           <div className="absolute inset-0 opacity-30">
+           <div className="absolute inset-0 opacity-30 hidden sm:block">
               <Plasma color="#DC2626" speed={0.6} scale={1.2} opacity={1} mouseInteractive={true} />
            </div>
            {/* Dark Gradient Overlay replacing maskImage to smoothly fade edges to charcoal background without browser rendering bugs */}
@@ -696,14 +696,14 @@ const Financing = () => {
           <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 pt-4">
             <Button 
               size="lg" 
-              className="px-8 sm:px-10 py-6 sm:py-9 crimson-bg rounded-none font-black text-lg sm:text-xl hover:bg-red-700 transition-all hover:scale-105 border-none shadow-[0_20px_50px_rgba(220,38,38,0.3)]" 
+              className="px-6 sm:px-10 py-4 sm:py-7 crimson-bg rounded-none font-black text-base sm:text-xl hover:bg-red-700 transition-all hover:scale-105 border-none shadow-[0_20px_50px_rgba(220,38,38,0.3)]" 
               asChild
             >
               <Link to="/inventory">{t('hero.cta_showroom')}</Link>
             </Button>
             <Button 
               size="lg" 
-              className="px-8 sm:px-10 py-6 sm:py-9 glass rounded-none font-black text-lg sm:text-xl hover:bg-white/10 border-white/20 bg-transparent text-white transition-all"
+              className="px-6 sm:px-10 py-4 sm:py-7 glass rounded-none font-black text-base sm:text-xl hover:bg-white/10 border-white/20 bg-transparent text-white transition-all"
               asChild
             >
               <Link to="/#process">{t('hero.cta_learn')}</Link>
@@ -1136,58 +1136,58 @@ const CarDetail = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="glass p-6 sm:p-10 rounded-2xl border-white/5 shadow-2xl">
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tighter mb-6 sm:mb-8 uppercase italic leading-tight">{language === 'fr' ? 'SE RENSEIGNER SUR' : 'SECURE THIS'} <br/> <span className="crimson-text underline">{language === 'fr' ? 'CE VÉHICULE' : 'ASSET'}</span></h3>
+            <div className="glass p-5 sm:p-8 rounded-2xl border-white/5 shadow-2xl">
+              <h3 className="text-lg sm:text-2xl font-black text-white tracking-tighter mb-4 sm:mb-8 uppercase italic leading-tight">{language === 'fr' ? 'SE RENSEIGNER SUR' : 'SECURE THIS'} <br/> <span className="crimson-text underline">{language === 'fr' ? 'CE VÉHICULE' : 'ASSET'}</span></h3>
               {formStatus === 'success' ? (
-                <div className="bg-crimson/10 border border-crimson/20 text-white p-6 sm:p-10 text-center space-y-4 rounded-xl">
-                  <ShieldCheck className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-crimson" />
-                  <p className="font-black text-xl sm:text-2xl tracking-tighter uppercase italic">{language === 'fr' ? 'DEMANDE ENVOYÉE !' : 'INQUIRY SENT!'}</p>
+                <div className="bg-crimson/10 border border-crimson/20 text-white p-5 sm:p-10 text-center space-y-4 rounded-xl">
+                  <ShieldCheck className="w-10 h-10 sm:w-16 sm:h-16 mx-auto text-crimson" />
+                  <p className="font-black text-lg sm:text-2xl tracking-tighter uppercase italic">{language === 'fr' ? 'DEMANDE ENVOYÉE !' : 'INQUIRY SENT!'}</p>
                   <p className="text-xs sm:text-sm text-white/50 font-medium">{language === 'fr' ? 'Un spécialiste vous contactera sous peu.' : 'One of our specialists will contact you shortly.'}</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <div className="space-y-1 sm:space-y-2">
+                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
+                    <div className="space-y-1">
                        <label className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Votre Nom' : 'Your Name'}</label>
-                       <Input name="fullName" className="bg-white/5 border-white/10 rounded-none px-4 h-12 sm:h-14 focus:border-crimson text-white font-bold" required />
+                       <Input name="fullName" className="bg-white/5 border-white/10 rounded-none px-3 h-10 sm:h-12 focus:border-crimson text-white font-bold" required />
                     </div>
-                    <div className="space-y-1 sm:space-y-2">
+                    <div className="space-y-1">
                        <label className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Adresse E-mail' : 'Email Address'}</label>
-                       <Input name="emailProfile" type="email" className="bg-white/5 border-white/10 rounded-none px-4 h-12 sm:h-14 focus:border-crimson text-white font-bold" required />
+                       <Input name="emailProfile" type="email" className="bg-white/5 border-white/10 rounded-none px-3 h-10 sm:h-12 focus:border-crimson text-white font-bold" required />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <div className="space-y-1 sm:space-y-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
+                    <div className="space-y-1">
                        <label className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Téléphone' : 'Phone'}</label>
-                       <Input name="phoneNumber" className="bg-white/5 border-white/10 rounded-none px-4 h-12 sm:h-14 focus:border-crimson text-white font-bold" />
+                       <Input name="phoneNumber" className="bg-white/5 border-white/10 rounded-none px-3 h-10 sm:h-12 focus:border-crimson text-white font-bold" />
                     </div>
-                    <div className="space-y-1 sm:space-y-2">
+                    <div className="space-y-1">
                        <label className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Sujet' : 'Subject'}</label>
                        <div className="relative">
-                         <select name="interests" className="w-full bg-white/5 border border-white/10 rounded-none px-4 h-12 sm:h-14 focus:border-crimson text-white appearance-none cursor-pointer outline-none font-bold text-sm sm:text-base">
+                         <select name="interests" className="w-full bg-white/5 border border-white/10 rounded-none px-3 h-10 sm:h-12 focus:border-crimson text-white appearance-none cursor-pointer outline-none font-bold text-xs sm:text-base">
                            <option className="bg-charcoal" value="Acquisition Inquiry">{language === 'fr' ? 'Acquisition' : 'Acquisition Inquiry'}</option>
                            <option className="bg-charcoal" value="Service">Service</option>
                            <option className="bg-charcoal" value="Capital / Financing">{language === 'fr' ? 'Financement' : 'Capital / Financing'}</option>
                          </select>
-                         <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/20">
-                            <ArrowRight className="w-4 h-4 rotate-90" />
+                         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/20">
+                            <ArrowRight className="w-3 h-3 rotate-90" />
                          </div>
                        </div>
                     </div>
                   </div>
-                  <div className="space-y-1 sm:space-y-2 py-4 border-y border-white/5">
-                    <p className="text-[10px] text-white/30 uppercase font-black tracking-widest">{language === 'fr' ? 'VÉHICULE D_INTÉRÊT' : 'SELECT ASSET'}</p>
-                    <p className="text-sm sm:text-base text-white font-black italic">{car.make} {car.model}</p>
+                  <div className="space-y-1 py-3 border-y border-white/5">
+                    <p className="text-[9px] text-white/30 uppercase font-black tracking-widest">{language === 'fr' ? 'VÉHICULE D_INTÉRÊT' : 'SELECT ASSET'}</p>
+                    <p className="text-xs sm:text-base text-white font-black italic">{car.make} {car.model}</p>
                     <input type="hidden" name="vehicle" value={`${car.make} ${car.model}`} />
                   </div>
-                  <div className="space-y-1 sm:space-y-2">
+                  <div className="space-y-1">
                     <label className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Message (Optionnel)' : 'Message (Optional)'}</label>
                     <textarea 
                        name="initialMessage" 
-                       className="w-full bg-white/5 border border-white/10 p-4 sm:p-5 h-24 sm:h-32 rounded-none outline-none text-white focus:border-crimson resize-none font-bold text-sm sm:text-base" 
+                       className="w-full bg-white/5 border border-white/10 p-3 h-20 sm:h-28 rounded-none outline-none text-white focus:border-crimson resize-none font-bold text-xs sm:text-base" 
                     />
                   </div>
-                  <Button type="submit" disabled={formStatus === 'loading'} className="w-full crimson-bg h-14 sm:h-16 rounded-none font-black text-base sm:text-lg uppercase tracking-[.2em] border-none shadow-2xl hover:scale-[1.02] transition-all">
+                  <Button type="submit" disabled={formStatus === 'loading'} className="w-full crimson-bg h-12 sm:h-14 rounded-none font-black text-xs sm:text-base uppercase tracking-[.2em] border-none shadow-2xl hover:scale-[1.02] transition-all">
                     {formStatus === 'loading' ? (language === 'fr' ? 'TRAITEMENT...' : 'PROCESSING...') : (language === 'fr' ? 'CONFIRMER L_ACQUISITION' : 'CONFIRM ACQUISITION')}
                   </Button>
                 </form>
