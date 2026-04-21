@@ -682,12 +682,12 @@ const Financing = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left lg:pt-0 md:mb-12 lg:mb-0"
+            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left lg:pt-0 md:mb-12 lg:mb-0 relative z-20"
           >
           <div className="inline-block px-3 py-1 glass rounded text-[10px] sm:text-xs font-bold uppercase tracking-widest crimson-text shadow-[0_0_20px_rgba(220,38,38,0.2)]">
             {t('hero.tag')}
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.95] tracking-tighter text-white uppercase">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.95] tracking-tighter text-white uppercase pointer-events-none">
             {t('hero.title_part1')}<br className="md:hidden" /> <span className="crimson-text text-glow italic">{t('hero.title_extraordinary')}</span>
           </h1>
           <p className="text-white/60 text-base sm:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed font-medium">
