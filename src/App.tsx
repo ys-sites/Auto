@@ -669,7 +669,7 @@ const Financing = () => {
   return (
     <div className="space-y-0 pt-16 sm:pt-20 overflow-x-hidden relative">
       {/* Hero */}
-      <section className="h-auto min-h-[auto] py-16 sm:h-[calc(100vh-80px)] sm:min-h-[750px] md:min-h-[800px] lg:min-h-[700px] flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
+      <section className="h-auto min-h-[auto] py-16 sm:h-[calc(100vh-80px)] sm:min-h-[750px] md:min-h-[850px] md:pb-40 lg:min-h-[700px] lg:pb-0 flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
         <div className="absolute inset-0 z-0 pointer-events-none">
            <div className="absolute inset-0 opacity-30 hidden sm:block">
               <Plasma color="#DC2626" speed={0.6} scale={1.2} opacity={1} mouseInteractive={true} />
@@ -743,7 +743,7 @@ const Financing = () => {
 
       {/* Stats Bar */}
       <SectionReveal>
-        <section className="bg-black/60 backdrop-blur-xl pt-2 pb-8 sm:py-24 md:pt-48 md:pb-32 lg:py-20 border-y border-white/10">
+        <section className="bg-black/60 backdrop-blur-xl pt-2 pb-8 sm:py-24 md:pt-96 md:pb-48 lg:py-20 border-y border-white/10">
           <div className="container mx-auto px-4 sm:px-6 flex flex-wrap justify-center lg:justify-between items-center gap-8 sm:gap-12 lg:gap-0">
             {[
               { label: 'Vehicles Sold', value: 4500, suffix: '+' },
