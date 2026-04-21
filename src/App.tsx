@@ -669,7 +669,7 @@ const Financing = () => {
   return (
     <div className="space-y-0 pt-16 sm:pt-20 overflow-x-hidden relative">
       {/* Hero */}
-      <section className="h-[calc(100vh-64px)] sm:h-[calc(100vh-80px)] min-h-[400px] sm:min-h-[700px] flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
+      <section className="h-auto min-h-[auto] py-16 sm:h-[calc(100vh-80px)] sm:min-h-[750px] md:min-h-[800px] lg:min-h-[700px] flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
         <div className="absolute inset-0 z-0 pointer-events-none">
            <div className="absolute inset-0 opacity-30 hidden sm:block">
               <Plasma color="#DC2626" speed={0.6} scale={1.2} opacity={1} mouseInteractive={true} />
@@ -682,7 +682,7 @@ const Financing = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left pt-8 sm:pt-12 lg:pt-0"
+            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left lg:pt-0"
           >
           <div className="inline-block px-3 py-1 glass rounded text-[10px] sm:text-xs font-bold uppercase tracking-widest crimson-text shadow-[0_0_20px_rgba(220,38,38,0.2)]">
             {t('hero.tag')}
@@ -743,7 +743,7 @@ const Financing = () => {
 
       {/* Stats Bar */}
       <SectionReveal>
-        <section className="bg-black/60 backdrop-blur-xl py-8 sm:py-20 border-y border-white/10">
+        <section className="bg-black/60 backdrop-blur-xl pt-2 pb-8 sm:py-24 md:py-32 lg:py-20 border-y border-white/10">
           <div className="container mx-auto px-4 sm:px-6 flex flex-wrap justify-center lg:justify-between items-center gap-8 sm:gap-12 lg:gap-0">
             {[
               { label: 'Vehicles Sold', value: 4500, suffix: '+' },
