@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# AutoElite Motors 🚗💨
 
-# Run and deploy your AI Studio app
+Premium used car dealership website specializing in high-performance and luxury vehicles.
 
-This contains everything you need to run your app locally.
+## 🌟 Features
+- **Premium UX**: Dark Luxury design with Crimson accents.
+- **Dynamic Inventory**: 25+ curated luxury vehicles.
+- **Advanced Filtering**: Filter by price, type, and search terms.
+- **Animated Interface**: Smooth scroll reveals and page transitions using `motion/react`.
+- **Responsive Design**: Optimized for all devices.
+- **Inquiry System**: Connects via 21st.dev API for dealer contact.
 
-View your app in AI Studio: https://ai.studio/apps/95409605-ccf4-4fa6-b0a1-768633a4d139
+## 🛠️ Stack
+- **Frontend**: React 19 + Vite + Tailwind CSS
+- **Components**: shadcn/ui
+- **Animations**: motion/react (framer-motion)
+- **Backend**: Express.js
+- **API**: Custom Car Inventory API + 21st.dev Integration
 
-## Run Locally
+## 🚀 Getting Started
+1. Install dependencies: `npm install`
+2. Configure `.env`: Use `.env.example` as a template.
+3. Start development server: `npm run dev`
 
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 📄 License
+MIT
