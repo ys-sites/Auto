@@ -718,7 +718,7 @@ const Financing = () => {
           className="hidden lg:flex flex-1 h-[600px] rounded-[3rem] overflow-hidden relative border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] group"
         >
           <img 
-            src="https://images.unsplash.com/photo-1621932953986-15fcfec8327c?auto=format&fit=crop&q=80&w=2000" 
+            src="/Porsche 911 Carrera GTS.jpg" 
             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
             alt="Porsche 911"
             referrerPolicy="no-referrer"
