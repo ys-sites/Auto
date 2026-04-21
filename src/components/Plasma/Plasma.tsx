@@ -122,7 +122,7 @@ export const Plasma = ({
         webgl: 2,
         alpha: true,
         antialias: false,
-        dpr: Math.min(window.devicePixelRatio || 1, isLowPower ? 1 : 1.5)
+        dpr: Math.min(window.devicePixelRatio || 1, isLowPower ? 0.5 : 0.75)
       });
       const gl = renderer.gl;
       const canvas = gl.canvas;

@@ -25,7 +25,6 @@ const SectionReveal = ({ children, className }: { children: React.ReactNode, cla
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-50px" }}
     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-    style={{ willChange: "transform, opacity" }}
     className={className}
   >
     {children}
@@ -33,22 +32,22 @@ const SectionReveal = ({ children, className }: { children: React.ReactNode, cla
 );
 
 const AnimatedCounter = ({ value, suffix = '', decimals = 0 }: { value: number, suffix?: string, decimals?: number }) => {
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [display, setDisplay] = useState(decimals === 0 ? "0" + suffix : (0).toFixed(decimals) + suffix);
 
   useEffect(() => {
-    if (isInView) {
+    if (isInView && ref.current) {
       const controls = animate(0, value, {
         duration: 3,
         ease: [0.16, 1, 0.3, 1], // Custom cinematic ease
         onUpdate(latest) {
+          if (!ref.current) return;
           const val = latest.toFixed(decimals);
           const parsed = parseFloat(val);
           if (decimals === 0) {
-            setDisplay(Math.floor(parsed).toLocaleString() + suffix);
+            ref.current.textContent = Math.floor(parsed).toLocaleString() + suffix;
           } else {
-            setDisplay(parsed.toFixed(decimals) + suffix);
+            ref.current.textContent = parsed.toFixed(decimals) + suffix;
           }
         }
       });
@@ -56,7 +55,7 @@ const AnimatedCounter = ({ value, suffix = '', decimals = 0 }: { value: number, 
     }
   }, [isInView, value, decimals, suffix]);
 
-  return <span ref={ref} className="tabular-nums">{display}</span>;
+  return <span ref={ref} className="tabular-nums">{decimals === 0 ? "0" + suffix : (0).toFixed(decimals) + suffix}</span>;
 };
 
 const Navbar = () => {
@@ -505,6 +504,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
                 alt={`${car.make} ${car.model}`}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
               <div className="absolute top-4 left-4 z-10">
                 <Badge className="crimson-bg text-white rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border-none pointer-events-none">
@@ -755,8 +755,8 @@ const Financing = () => {
       {/* Hero */}
       <section className="h-auto min-h-[auto] py-16 sm:h-[calc(100vh-80px)] sm:min-h-[750px] md:min-h-[850px] md:pb-40 lg:min-h-[700px] lg:pb-0 flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
         <div className="absolute inset-0 z-0 pointer-events-none">
-           <div className="absolute inset-0 opacity-30 hidden sm:block">
-              <Plasma color="#DC2626" speed={0.6} scale={1.2} opacity={1} mouseInteractive={true} />
+           <div className="absolute inset-0 opacity-100 hidden sm:block">
+              <Plasma color="#DC2626" speed={0.6} scale={1.2} opacity={0.3} mouseInteractive={true} />
            </div>
            {/* Dark Gradient Overlay replacing maskImage to smoothly fade edges to charcoal background without browser rendering bugs */}
            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#1a1a1a_90%)]" />
@@ -806,6 +806,7 @@ const Financing = () => {
             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
             alt="Porsche 911"
             referrerPolicy="no-referrer"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent opacity-80" />
           <div className="absolute bottom-16 left-16">
@@ -912,6 +913,7 @@ const Financing = () => {
                   alt="Heritage Asset"
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/40" />
                 <div className="absolute top-6 sm:top-10 left-6 sm:left-10 space-y-2 pointer-events-none z-10">
@@ -960,7 +962,7 @@ const Financing = () => {
       {/* Final CTA */}
       <section className="py-60 relative overflow-hidden bg-black flex items-center justify-center text-center">
         <div className="absolute inset-0 opacity-20">
-           <img src="https://images.unsplash.com/photo-1542362567-b058c02b9ac1?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" />
+           <img src="https://images.unsplash.com/photo-1542362567-b058c02b9ac1?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover grayscale" referrerPolicy="no-referrer" loading="lazy" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-black to-charcoal" />
         

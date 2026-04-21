@@ -331,6 +331,8 @@ const GlobalSpotlight = ({
       );
       z-index: 200;
       opacity: 0;
+      left: 0;
+      top: 0;
       transform: translate(-50%, -50%);
       mix-blend-mode: screen;
     `;
@@ -385,8 +387,10 @@ const GlobalSpotlight = ({
       });
 
       gsap.to(spotlightRef.current, {
-        left: e.clientX,
-        top: e.clientY,
+        x: e.clientX,
+        y: e.clientY,
+        xPercent: -50,
+        yPercent: -50,
         duration: 0.1,
         ease: 'power2.out'
       });
