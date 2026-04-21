@@ -24,7 +24,7 @@ export const cars: Car[] = [
     type: 'Coupe',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7a738?auto=format&fit=crop&q=80&w=1000',
+    image: '/Bentley Continental GT.jpg',
     description: 'The definitive Grand Tourer. Hand-crafted luxury combined with effortless performance.',
     features: ['Bentley Rotating Display', 'Mulliner Driving Specification', 'City Specification', 'Deep Pile Overmats']
   },
@@ -38,7 +38,7 @@ export const cars: Car[] = [
     type: 'SUV',
     fuel: 'Hybrid',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1600191798893-d4df0828a50c?auto=format&fit=crop&q=80&w=1000',
+    image: '/BMW X7 M60i.jpg',
     description: 'The pinnacle of BMW SUVs. Three rows of luxury with a powerful mild-hybrid V8 engine.',
     features: ['Executive Package', 'Sky Lounge LED Roof', 'Bowers & Wilkins Diamond Sound', 'M Sport Pro Package']
   },
@@ -52,7 +52,7 @@ export const cars: Car[] = [
     type: 'SUV',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1520050206274-a1af4464086d?auto=format&fit=crop&q=80&w=1000',
+    image: '/Mercedes-Benz G 63 AMG.jpg',
     description: 'The iconic G-Wagon in its most powerful form. A statement of luxury and off-road capability.',
     features: ['Night Package', 'Burmester Surround', 'Massage Seats', 'Panoramic Roof']
   },
@@ -66,22 +66,22 @@ export const cars: Car[] = [
     type: 'Sedan',
     fuel: 'Electric',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1617719116053-4743399d07ad?auto=format&fit=crop&q=80&w=1000',
+    image: '/Tesla Model S Plaid.jpg',
     description: 'The quickest accelerating car in production today. Efficiency meets insane levels of power.',
     features: ['Full Self-Driving', 'Yoke Steering', 'Ludicrous Mode', 'Ultra High Fidelity Sound']
   },
   {
     id: '1',
     make: 'Porsche',
-    model: '911 Carrera S',
+    model: '911 Carrera GTS',
     year: 2022,
     price: 145000,
     mileage: 5200,
     type: 'Coupe',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1000',
-    description: 'The Porsche 911 Carrera S offers a perfect blend of performance and everyday usability. Featuring a twin-turbocharged flat-six engine.',
+    image: '/Porsche 911 Carrera GTS.jpg',
+    description: 'The Porsche 911 Carrera GTS offers a perfect blend of performance and everyday usability. Featuring a twin-turbocharged flat-six engine.',
     features: ['Sport Chrono Package', 'Bose Sound System', 'Adaptive Sport Seats', 'Sunroof']
   },
   {
@@ -206,7 +206,7 @@ export const cars: Car[] = [
     type: 'Coupe',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1566274360936-692e1ec05333?auto=format&fit=crop&q=80&w=1000',
+    image: '/Jaguar F-Type R.jpg',
     description: 'A true sports car with a thunderous V8. The F-Type R is as fast as it is beautiful.',
     features: ['Climate Pack', 'Red Brake Calipers', 'Switchable Active Exhaust', 'Meridian Sound']
   },
@@ -220,7 +220,7 @@ export const cars: Car[] = [
     type: 'Sedan',
     fuel: 'Electric',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1594502184342-2e12f877ca73?auto=format&fit=crop&q=80&w=1000',
+    image: '/Porsche Taycan Turbo.jpg',
     description: 'Porsche soul, electrified. The Taycan Turbo offers sports car handling in a four-door EV.',
     features: ['Performance Battery Plus', 'PCCB', 'Sport Design Package', 'Passenger Display']
   },
@@ -234,7 +234,7 @@ export const cars: Car[] = [
     type: 'Coupe',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1574139828236-fa2a8848d6ca?auto=format&fit=crop&q=80&w=1000',
+    image: '/Lexus LC 500.jpg',
     description: 'A masterpiece of design and engineering. Pure V8 naturally aspirated bliss.',
     features: ['Mark Levinson Audio', 'Head-Up Display', 'Carbon Fiber Roof', 'Torsen LSD']
   },
@@ -248,7 +248,7 @@ export const cars: Car[] = [
     type: 'Coupe',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1632243193044-743a067915aa?auto=format&fit=crop&q=80&w=1000',
+    image: '/Maserati MC20.jpg',
     description: 'The return to racing. Maseratis new mid-engine supercar featuring the Nettuno V6.',
     features: ['Carbon Ceramic Brakes', 'Sonus Faber Sound', 'Suspension Lifter', 'Exterior Carbon Fiber']
   },
@@ -276,7 +276,7 @@ export const cars: Car[] = [
     type: 'SUV',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1616422285623-13ff0167c95c?auto=format&fit=crop&q=80&w=1000',
+    image: '/Land Rover Defender 110 X.jpg',
     description: 'The ultimate modern-day off-roader. Rugged capability paired with high-tech luxury.',
     features: ['Adaptive Cruise Control', 'Meridian Sound', 'Black Contrast Roof', 'ClearSight Rear View Mirror']
   },
@@ -290,7 +290,7 @@ export const cars: Car[] = [
     type: 'Sedan',
     fuel: 'Electric',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1662583319623-644bfef4336c?auto=format&fit=crop&q=80&w=1000',
+    image: '/BMW i7 xDrive60.jpg',
     description: 'Electric luxury defined. Featuring the groundbreaking BMW Theater Screen for rear passengers.',
     features: ['Theater Screen', 'Parking Assistant Professional', 'Executive Lounge Seating', 'Crystal Headlights']
   },
@@ -304,7 +304,7 @@ export const cars: Car[] = [
     type: 'Sedan',
     fuel: 'Electric',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1632766321262-60db62024da8?auto=format&fit=crop&q=80&w=1000',
+    image: '/Mercedes-Benz EQS 580.jpg',
     description: 'The future of Mercedes-Benz luxury. The EQS features the revolutionary Hyperscreen.',
     features: ['MBUX Hyperscreen', 'Rear-Axle Steering', 'Comfort Doors', 'HEPA Filter']
   },
@@ -318,7 +318,7 @@ export const cars: Car[] = [
     type: 'Sedan',
     fuel: 'Petrol',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1631215539199-fd89201a0988?auto=format&fit=crop&q=80&w=1000',
+    image: '/Rolls-Royce Ghost.jpg',
     description: 'Post-opulent luxury. The Rolls-Royce Ghost offers a serene and unparalleled driving experience.',
     features: ['Starlight Headliner', 'Picnic Tables', 'Lambswool Floormats', 'Besope Audio']
   },
@@ -346,7 +346,7 @@ export const cars: Car[] = [
     type: 'Sedan',
     fuel: 'Electric',
     transmission: 'Automatic',
-    image: 'https://images.unsplash.com/photo-1642431604557-f655ae8d7529?auto=format&fit=crop&q=80&w=1000',
+    image: '/Lucid Air Grand Touring.jpg',
     description: 'Luxury electric sedan with class-leading range and performance. Elegant and aerodynamic.',
     features: ['DreamDrive Pro', 'Glass Canopy', 'Surreal Sound Pro', '21 Inch Aero Blades']
   },
