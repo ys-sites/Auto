@@ -687,8 +687,8 @@ const Financing = () => {
           <div className="inline-block px-3 py-1 glass rounded text-[10px] sm:text-xs font-bold uppercase tracking-widest crimson-text shadow-[0_0_20px_rgba(220,38,38,0.2)]">
             {t('hero.tag')}
           </div>
-          <h1 className="text-4xl sm:text-6xl md:text-9xl font-black leading-[0.95] tracking-tighter text-white uppercase">
-            {t('hero.title_part1')}<br/><span className="crimson-text text-glow italic">{t('hero.title_extraordinary')}</span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.95] tracking-tighter text-white uppercase">
+            {t('hero.title_part1')}<br className="md:hidden" /> <span className="crimson-text text-glow italic">{t('hero.title_extraordinary')}</span>
           </h1>
           <p className="text-white/60 text-base sm:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed font-medium">
             {t('hero.description')}
