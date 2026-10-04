@@ -21,6 +21,11 @@ export const translations = {
       chip_title: "Clean title",
       chip_price: "Fair price"
     },
+    notfound: {
+      title: "This car drove off.",
+      text: "The page you're looking for isn't here — but great cars are. Let's get you back on the road.",
+      browse: "BROWSE CARS"
+    },
     leadModal: {
       call: {
         title: "Call AK Flips",
@@ -204,6 +209,11 @@ export const translations = {
       chip_inspected: "Entièrement inspectées",
       chip_title: "Historique vérifié",
       chip_price: "Prix juste"
+    },
+    notfound: {
+      title: "Cette auto s'est envolée.",
+      text: "La page que vous cherchez n'est pas ici — mais de belles autos, oui. Remettons-vous sur la route.",
+      browse: "VOIR LES AUTOS"
     },
     leadModal: {
       call: {

@@ -2040,6 +2040,47 @@ const CarDetail = () => {
   );
 };
 
+// --- 404 page ---
+const NotFound = () => {
+  const { t } = useLanguage();
+  return (
+    <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-20 space-y-6">
+      <img src={SITE.logo} alt="AK Flips logo" className="w-20 h-20 rounded-full object-cover ring-2 ring-red-600/60 shadow-[0_0_30px_rgba(220,38,38,0.35)]" />
+      <h1 className="text-7xl sm:text-8xl font-black text-white tracking-tighter">404</h1>
+      <h2 className="text-2xl sm:text-3xl font-black text-white uppercase">{t('notfound.title')}</h2>
+      <p className="text-white/50 max-w-md">{t('notfound.text')}</p>
+      <div className="flex flex-wrap justify-center gap-4 pt-2">
+        <Button asChild size="lg" className="crimson-bg rounded-none font-black uppercase px-8 py-6 hover:bg-red-700 border-none">
+          <Link to="/inventory">{t('notfound.browse')}</Link>
+        </Button>
+        <Button size="lg" onClick={() => leadBus.open('call')} className="glass rounded-none font-black uppercase px-8 py-6 text-white hover:bg-white/10 border-white/20 bg-transparent">
+          <Phone className="w-5 h-5 mr-2" />
+          {t('hero.cta_call')}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+// --- Per-route document titles (SEO + share previews) ---
+const DocumentTitle = () => {
+  const { pathname } = useLocation();
+  const { language } = useLanguage();
+  useEffect(() => {
+    const fr = language === 'fr';
+    let title = fr ? "AK Flips | Autos d'occasion de qualité à Montréal" : 'AK Flips | Quality Used Cars in Montreal';
+    if (pathname === '/inventory') title = fr ? "Inventaire | AK Flips" : 'Inventory | AK Flips';
+    else if (pathname === '/sell') title = fr ? "Vendez votre auto | AK Flips" : 'Sell Your Car | AK Flips';
+    else if (pathname === '/how-it-works') title = fr ? "Comment ça marche | AK Flips" : 'How It Works | AK Flips';
+    else if (pathname.startsWith('/cars/')) {
+      const car = carData.find((c) => c.id === pathname.split('/')[2]);
+      if (car) title = `${car.year} ${car.make} ${car.model} — $${car.price.toLocaleString('en-CA')} | AK Flips`;
+    }
+    document.title = title;
+  }, [pathname, language]);
+  return null;
+};
+
 // --- Main App ---
 
 export default function App() {
@@ -2093,12 +2134,18 @@ export default function App() {
                   <CarDetailWrapper />
                 </motion.div>
               } />
+              <Route path="*" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+                  <NotFound />
+                </motion.div>
+              } />
             </Routes>
           </AnimatePresence>
         </main>
 
         <Footer />
         <Analytics />
+        <DocumentTitle />
         <GlobalLeadModal />
         <GlobalToast />
       </div>
