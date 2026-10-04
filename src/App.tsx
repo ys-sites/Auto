@@ -68,6 +68,28 @@ const submitLead = async (payload: Record<string, unknown>, subject?: string): P
   throw new Error('All FormSubmit endpoints failed');
 };
 
+// Fire-and-forget: email BOTH inboxes when a visitor taps the phone number.
+// Never blocks the tel: link — failures are swallowed silently.
+const notifyPhoneClick = () => {
+  const body = JSON.stringify({
+    _subject: '📞 Phone tap — AK Flips website',
+    _template: 'table',
+    _captcha: 'false',
+    event: 'phone_click',
+    page: typeof window !== 'undefined' ? window.location.href : '',
+    time: new Date().toISOString(),
+    note: 'A visitor tapped the phone number on the AK Flips website.',
+  });
+  FORM_ENDPOINTS.forEach((url) => {
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body,
+      keepalive: true,
+    }).catch(() => {});
+  });
+};
+
 // Honest partial-delivery note shown on success screens when only one inbox got the lead.
 const PartialNote = ({ partial }: { partial: boolean }) => {
   const { language } = useLanguage();
@@ -263,7 +285,7 @@ const Footer = () => {
           <div className="space-y-10">
             <h4 className="text-[10px] font-black text-white/20 uppercase tracking-[.4em] mb-10">{t('nav.contact')}</h4>
             <div className="space-y-6">
-              <p className="text-xs font-bold text-white uppercase tracking-widest">{language === 'fr' ? 'Téléphone' : 'Phone'}: <a href={SITE.phoneHref} className="crimson-text block mt-2 text-base hover:underline">{SITE.phone}</a></p>
+              <p className="text-xs font-bold text-white uppercase tracking-widest">{language === 'fr' ? 'Téléphone' : 'Phone'}: <a href={SITE.phoneHref} onClick={notifyPhoneClick} className="crimson-text block mt-2 text-base hover:underline">{SITE.phone}</a></p>
               <p className="text-xs font-bold text-white uppercase tracking-widest">Email: <a href={`mailto:${SITE.email}`} className="crimson-text block mt-2 text-base break-all hover:underline">{SITE.email}</a></p>
               <p className="text-xs font-black text-white uppercase tracking-widest">{t('contact.info.location')}: <span className="text-white/40 block mt-2">{SITE.city}</span></p>
             </div>
@@ -427,7 +449,7 @@ const ContactSection = () => {
                     <div>
                       <p className="text-[9px] sm:text-[10px] font-black text-white/30 uppercase tracking-widest">{item.label}</p>
                       {item.href ? (
-                        <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-lg sm:text-xl font-bold text-white uppercase italic hover:text-crimson transition-colors break-all">{item.val}</a>
+                        <a href={item.href} onClick={item.href === SITE.phoneHref ? notifyPhoneClick : undefined} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-lg sm:text-xl font-bold text-white uppercase italic hover:text-crimson transition-colors break-all">{item.val}</a>
                       ) : (
                         <p className="text-lg sm:text-xl font-bold text-white uppercase italic">{item.val}</p>
                       )}
