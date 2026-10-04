@@ -9,6 +9,7 @@ import { Badge } from './components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger } from './components/ui/sheet';
 import { Car, cars as carData } from './data/cars';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import { Analytics } from '@vercel/analytics/react';
 import { Language, translations } from './locales/translations';
 import BorderGlow from './components/BorderGlow/BorderGlow';
 import MagicBento from './components/MagicBento/MagicBento';
@@ -70,15 +71,15 @@ const submitLead = async (payload: Record<string, unknown>, subject?: string): P
 
 // Fire-and-forget: email BOTH inboxes when a visitor taps the phone number.
 // Never blocks the tel: link — failures are swallowed silently.
-const notifyPhoneClick = () => {
+const notifyEvent = (event: string, subject: string, note: string) => {
   const body = JSON.stringify({
-    _subject: '📞 Phone tap — AK Flips website',
+    _subject: subject,
     _template: 'table',
     _captcha: 'false',
-    event: 'phone_click',
+    event,
     page: typeof window !== 'undefined' ? window.location.href : '',
     time: new Date().toISOString(),
-    note: 'A visitor tapped the phone number on the AK Flips website.',
+    note,
   });
   FORM_ENDPOINTS.forEach((url) => {
     fetch(url, {
@@ -89,6 +90,13 @@ const notifyPhoneClick = () => {
     }).catch(() => {});
   });
 };
+
+const notifyPhoneClick = () =>
+  notifyEvent('phone_click', '📞 Phone tap — AK Flips website', 'A visitor tapped the phone number on the AK Flips website.');
+const notifyInstagramClick = () =>
+  notifyEvent('instagram_click', '📸 Instagram visit — AK Flips website', 'A visitor clicked through to Instagram from the AK Flips website.');
+const notifyEmailCopy = () =>
+  notifyEvent('email_copy', '✉️ Email copied — AK Flips website', 'A visitor copied the email address from the AK Flips website.');
 
 // Honest partial-delivery note shown on success screens when only one inbox got the lead.
 const PartialNote = ({ partial }: { partial: boolean }) => {
@@ -258,6 +266,7 @@ const Footer = () => {
             <p className="text-white/40 leading-relaxed font-medium">{t('footer.tagline')}</p>
             <div className="flex gap-5">
               <a href={SITE.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"
+                onClick={notifyInstagramClick}
                 className="w-10 h-10 glass rounded-full flex items-center justify-center hover:crimson-bg hover:scale-110 transition-all duration-300 text-white">
                 <Instagram className="w-4 h-4" />
               </a>
@@ -286,7 +295,7 @@ const Footer = () => {
             <h4 className="text-[10px] font-black text-white/20 uppercase tracking-[.4em] mb-10">{t('nav.contact')}</h4>
             <div className="space-y-6">
               <p className="text-xs font-bold text-white uppercase tracking-widest">{language === 'fr' ? 'Téléphone' : 'Phone'}: <a href={SITE.phoneHref} onClick={notifyPhoneClick} className="crimson-text block mt-2 text-base hover:underline">{SITE.phone}</a></p>
-              <p className="text-xs font-bold text-white uppercase tracking-widest">Email: <a href={`mailto:${SITE.email}`} className="crimson-text block mt-2 text-base break-all hover:underline">{SITE.email}</a></p>
+              <p className="text-xs font-bold text-white uppercase tracking-widest">Email: <a href={`mailto:${SITE.email}`} onCopy={notifyEmailCopy} className="crimson-text block mt-2 text-base break-all hover:underline">{SITE.email}</a></p>
               <p className="text-xs font-black text-white uppercase tracking-widest">{t('contact.info.location')}: <span className="text-white/40 block mt-2">{SITE.city}</span></p>
             </div>
           </div>
@@ -449,7 +458,10 @@ const ContactSection = () => {
                     <div>
                       <p className="text-[9px] sm:text-[10px] font-black text-white/30 uppercase tracking-widest">{item.label}</p>
                       {item.href ? (
-                        <a href={item.href} onClick={item.href === SITE.phoneHref ? notifyPhoneClick : undefined} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-lg sm:text-xl font-bold text-white uppercase italic hover:text-crimson transition-colors break-all">{item.val}</a>
+                        <a href={item.href}
+                          onClick={item.href === SITE.phoneHref ? notifyPhoneClick : item.href === SITE.instagram ? notifyInstagramClick : undefined}
+                          onCopy={item.href.startsWith('mailto:') ? notifyEmailCopy : undefined}
+                          target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-lg sm:text-xl font-bold text-white uppercase italic hover:text-crimson transition-colors break-all">{item.val}</a>
                       ) : (
                         <p className="text-lg sm:text-xl font-bold text-white uppercase italic">{item.val}</p>
                       )}
@@ -503,7 +515,7 @@ const ContactSection = () => {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <Button onClick={() => setStatus('idle')} className="crimson-bg text-white rounded-none uppercase font-black tracking-widest h-10 sm:h-14 px-6 sm:px-10 text-xs sm:text-base border-none">{language === 'fr' ? 'Réessayer' : 'Try Again'}</Button>
                       <Button asChild variant="outline" className="border-white/10 text-white rounded-none uppercase font-black tracking-widest h-10 sm:h-14 px-6 sm:px-10 text-xs sm:text-base">
-                        <a href={SITE.instagram} target="_blank" rel="noreferrer">Instagram</a>
+                        <a href={SITE.instagram} target="_blank" rel="noreferrer" onClick={notifyInstagramClick}>Instagram</a>
                       </Button>
                     </div>
                   </motion.div>
@@ -1564,6 +1576,7 @@ export default function App() {
         </main>
 
         <Footer />
+        <Analytics />
       </div>
     </LanguageProvider>
   );
