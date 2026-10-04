@@ -13,7 +13,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Language, translations } from './locales/translations';
 import BorderGlow from './components/BorderGlow/BorderGlow';
 import VideoBackground from './components/VideoBackground';
-import MagicBento from './components/MagicBento/MagicBento';
+const MagicBento = React.lazy(() => import('./components/MagicBento/MagicBento'));
 import ElasticSlider from './components/ElasticSlider/ElasticSlider';
 
 // --- Site constants (single source of truth) ---
@@ -1308,7 +1308,7 @@ const Home = () => {
           public/ (e.g. public/hero-video.mp4) and set src="/hero-video.mp4"
           on the VideoBackground below. One-line change. */}
       <section className="relative flex min-h-[100svh] w-full items-end overflow-hidden sm:items-center">
-        <VideoBackground poster="/cars/nissan-rogue-2016.webp" />
+        <VideoBackground poster="/cars/toyota-camry-2016/01.webp" />
 
         <div className="container relative z-10 mx-auto w-full px-5 pb-16 pt-32 sm:px-10 sm:pb-24">
           <motion.div
@@ -1442,6 +1442,7 @@ const Home = () => {
 
             <div className="mt-12">
               <SectionReveal>
+                <React.Suspense fallback={<div className="h-64" />}>
                 <MagicBento
                   items={steps.map((s) => ({ label: t('process.tag').toUpperCase(), title: s.title.toUpperCase(), description: s.desc }))}
                   textAutoHide={false}
@@ -1455,6 +1456,7 @@ const Home = () => {
                   particleCount={12}
                   glowColor="220, 38, 38"
                 />
+                </React.Suspense>
               </SectionReveal>
             </div>
 
@@ -1491,7 +1493,7 @@ const Home = () => {
       {/* Final CTA */}
       <section className="py-60 relative overflow-hidden bg-black flex items-center justify-center text-center">
         <div className="absolute inset-0 opacity-20">
-          <img src="/cars/toyota-corolla-2018.webp" className="w-full h-full object-cover grayscale" loading="lazy" />
+          <img src="/cars/toyota-corolla-2016/01.webp" className="w-full h-full object-cover grayscale" loading="lazy" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-black to-charcoal" />
 
