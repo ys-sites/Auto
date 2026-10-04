@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://akflip.vercel.app/sitemap.xml
+Sitemap: https://autokhawaja.vercel.app/sitemap.xml

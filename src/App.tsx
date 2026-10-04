@@ -28,7 +28,7 @@ export const SITE = {
   instagramDm: 'https://ig.me/m/ak.flips._',
   instagramHandle: '@ak.flips._',
   city: 'Montreal, Quebec',
-  logo: '/ak-flips-logo.jpg',
+  logo: '/auto-khawaja-logo.jpg',
 };
 
 // --- FormSubmit helper (dual inbox) ---
