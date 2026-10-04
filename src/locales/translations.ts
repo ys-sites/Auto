@@ -29,7 +29,11 @@ export const translations = {
         title: "Chat on Instagram",
         subtitle: "Leave your name and number — then we open the chat with a message ready to send.",
         submit: "OPEN CHAT",
-        sending: "SENDING..."
+        sending: "SENDING...",
+        readyTitle: "Your message is ready",
+        readyDesc: "Send it straight to our Instagram chat — the message is pre-filled for you.",
+        openChat: "SEND INSTAGRAM MESSAGE",
+        openDirect: "or open the chat directly"
       },
       email: {
         title: "Email AK Flips",
@@ -39,7 +43,7 @@ export const translations = {
       }
     },
     instagram: {
-      dmOpener: "Hi! I found AK Flips online and I'm interested in one of your cars. Is it still available?",
+      dmOpener: "Hey there! I saw your website and I'm interested in one of your cars. Can you contact me?",
       dmToast: "Opening chat — message copied, just paste it 📋"
     },
     filters: {
@@ -146,7 +150,11 @@ export const translations = {
         title: "Discutez sur Instagram",
         subtitle: "Laissez votre nom et numéro — on ouvre ensuite la discussion avec un message prêt à envoyer.",
         submit: "OUVRIR LE CHAT",
-        sending: "ENVOI..."
+        sending: "ENVOI...",
+        readyTitle: "Votre message est prêt",
+        readyDesc: "Envoyez-le directement sur notre Instagram — le message est pré-rempli pour vous.",
+        openChat: "ENVOYER LE MESSAGE INSTAGRAM",
+        openDirect: "ou ouvrir la discussion directement"
       },
       email: {
         title: "Écrivez à AK Flips",
@@ -156,7 +164,7 @@ export const translations = {
       }
     },
     instagram: {
-      dmOpener: "Salut ! J'ai trouvé AK Flips en ligne et je suis intéressé par une de vos autos. Est-elle encore disponible ?",
+      dmOpener: "Salut ! J'ai vu votre site web et je suis intéressé par une de vos autos. Pouvez-vous me contacter ?",
       dmToast: "Ouverture du chat — message copié, collez-le 📋"
     },
     filters: {

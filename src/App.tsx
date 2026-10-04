@@ -963,25 +963,55 @@ const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onC
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [sending, setSending] = useState(false);
+  const [step, setStep] = useState<'form' | 'ready'>('form');
+
+  // Reset the modal every time it closes so it's fresh on next open.
+  useEffect(() => {
+    if (!open) {
+      setStep('form');
+      setName('');
+      setPhone('');
+      setSending(false);
+    }
+  }, [open ]);
+
+  const openDM = () => {
+    window.open(SITE.instagramDm, '_blank', 'noopener,noreferrer');
+  };
+
+  // Best-effort pre-filled share: the phone's share sheet opens Instagram's
+  // DM composer WITH the message already written. Falls back to the DM link.
+  const sendViaShare = async () => {
+    const text = t('instagram.dmOpener');
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'AK Flips', text });
+        return;
+      } catch {
+        // cancelled or failed — fall through to direct DM link
+      }
+    }
+    openDM();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
     setSending(true);
-    // Fire-and-forget: keep the user gesture intact so the call/DM/mail app opens.
+    // Fire-and-forget: the lead is already on its way; the DM step is separate.
     submitLead(
       { name: name.trim(), phone: phone.trim(), source: `contact_${mode}` },
       LEAD_SUBJECT[mode]
     ).catch(() => {});
+    if (mode === 'instagram') {
+      // Instagram gets a second step: show the ready-made DM text first.
+      setSending(false);
+      setStep('ready');
+      return;
+    }
     onClose();
     if (mode === 'call') {
       window.location.href = SITE.phoneHref;
-    } else if (mode === 'instagram') {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(t('instagram.dmOpener')).catch(() => {});
-      }
-      toastBus.show(t('instagram.dmToast'));
-      window.open(SITE.instagramDm, '_blank', 'noopener,noreferrer');
     } else {
       window.location.href = `mailto:${SITE.email}`;
     }
@@ -1016,8 +1046,32 @@ const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onC
             <div className="w-12 h-12 rounded-full crimson-bg flex items-center justify-center mb-4 shadow-[0_0_25px_rgba(220,38,38,0.4)]">
               <Icon className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-2xl font-black text-white uppercase tracking-tight">{t(`leadModal.${mode}.title`)}</h3>
-            <p className="text-white/50 text-sm mt-1 mb-6">{t(`leadModal.${mode}.subtitle`)}</p>
+            <h3 className="text-2xl font-black text-white uppercase tracking-tight">
+              {step === 'ready' ? t('leadModal.instagram.readyTitle') : t(`leadModal.${mode}.title`)}
+            </h3>
+            <p className="text-white/50 text-sm mt-1 mb-6">
+              {step === 'ready' ? t('leadModal.instagram.readyDesc') : t(`leadModal.${mode}.subtitle`)}
+            </p>
+            {step === 'ready' ? (
+              <div className="space-y-4">
+                <div className="bg-white/5 border border-white/15 rounded-xl p-4">
+                  <p className="text-white/80 text-sm italic leading-relaxed">“{t('instagram.dmOpener')}”</p>
+                </div>
+                <Button
+                  onClick={sendViaShare}
+                  className="w-full crimson-bg rounded-none font-black text-base py-6 hover:bg-red-700 transition-all border-none"
+                >
+                  <Instagram className="w-5 h-5 mr-2" />
+                  {t('leadModal.instagram.openChat')}
+                </Button>
+                <button
+                  onClick={openDM}
+                  className="w-full text-center text-white/40 hover:text-white text-xs underline underline-offset-4 transition-colors"
+                >
+                  {t('leadModal.instagram.openDirect')}
+                </button>
+              </div>
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 placeholder={t('contact.form.name')}
@@ -1045,6 +1099,7 @@ const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onC
                 {sending ? t(`leadModal.${mode}.sending`) : t(`leadModal.${mode}.submit`)}
               </Button>
             </form>
+            )}
           </motion.div>
         </motion.div>
       )}
