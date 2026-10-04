@@ -148,6 +148,8 @@ export const translations = {
       sticky_dm: "DM",
       sticky_reserve: "Reserve",
       sold: "SOLD",
+      sale_save: "SAVE",
+      sale_urgency: "Flip price — this one won't last long.",
       sold_desc: "This one found a new home — but we flip cars like this every week.",
       sold_cta: "FIND ME A SIMILAR ONE"
     },
@@ -337,6 +339,8 @@ export const translations = {
       sticky_dm: "DM",
       sticky_reserve: "Réserver",
       sold: "VENDUE",
+      sale_save: "ÉCONOMISEZ",
+      sale_urgency: "Prix liquidation — cette auto partira vite.",
       sold_desc: "Celle-ci a trouvé un nouveau foyer — mais on revend des autos comme celle-ci chaque semaine.",
       sold_cta: "TROUVEZ-M'EN UNE SEMBLABLE"
     },

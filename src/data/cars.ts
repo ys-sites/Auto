@@ -4,6 +4,9 @@ export interface Car {
   model: string;
   year: number;
   price: number;
+  // Sale pricing: originalPrice is the struck-through anchor; price is what the buyer pays.
+  // When set and > price, cards + VDP show "was X, now Y" with a -% pill to drive urgency.
+  originalPrice?: number;
   mileage: number;
   type: 'SUV' | 'Sedan' | 'Coupe' | 'Convertible';
   fuel: 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid';
@@ -28,6 +31,7 @@ export const cars: Car[] = [
     model: 'Civic LX',
     year: 2019,
     price: 16900,
+    originalPrice: 17900,
     mileage: 85200,
     type: 'Sedan',
     fuel: 'Petrol',
@@ -62,6 +66,7 @@ export const cars: Car[] = [
     model: 'Corolla LE',
     year: 2018,
     price: 14500,
+    originalPrice: 15400,
     mileage: 98400,
     type: 'Sedan',
     fuel: 'Petrol',
@@ -94,6 +99,7 @@ export const cars: Car[] = [
     model: 'Mazda3 GX',
     year: 2017,
     price: 11900,
+    originalPrice: 12700,
     mileage: 112600,
     type: 'Sedan',
     fuel: 'Petrol',
@@ -128,6 +134,7 @@ export const cars: Car[] = [
     model: 'Elantra Preferred',
     year: 2020,
     price: 15900,
+    originalPrice: 16900,
     mileage: 76300,
     type: 'Sedan',
     fuel: 'Petrol',
@@ -162,6 +169,7 @@ export const cars: Car[] = [
     model: 'Rogue SV',
     year: 2016,
     price: 12900,
+    originalPrice: 13700,
     mileage: 128900,
     type: 'SUV',
     fuel: 'Petrol',

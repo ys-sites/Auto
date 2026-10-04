@@ -624,6 +624,9 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const { language } = useLanguage();
   const isSold = car.status === 'sold';
   const badge = language === 'fr' ? (car.badgeFr || car.badge) : car.badge;
+  const sale = car.originalPrice && car.originalPrice > car.price
+    ? { save: car.originalPrice - car.price, pct: Math.round((car.originalPrice - car.price) / car.originalPrice * 100) }
+    : null;
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -691,7 +694,15 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
               </div>
 
               <div className="flex justify-between items-center pt-4 border-t border-white/5 mt-auto">
-                <p className="text-xl font-bold crimson-text">${car.price.toLocaleString()}</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {sale && <p className="text-sm text-white/35 line-through font-medium">${car.originalPrice!.toLocaleString()}</p>}
+                  <p className="text-xl font-bold crimson-text">${car.price.toLocaleString()}</p>
+                  {sale && !isSold && (
+                    <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider">
+                      -{sale.pct}%
+                    </span>
+                  )}
+                </div>
                 <div className="text-[10px] uppercase font-extrabold text-white/20 tracking-tighter">{language === 'fr' ? 'Inspectée' : 'Inspected'}</div>
               </div>
             </div>
@@ -1772,6 +1783,9 @@ const PaymentEstimator = ({ price }: { price: number }) => {
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
   const car = carData.find(c => c.id === id);
+  const sale = car?.originalPrice && car.originalPrice > car.price
+    ? { save: car.originalPrice - car.price, pct: Math.round((car.originalPrice - car.price) / car.originalPrice * 100) }
+    : null;
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [partial, setPartial] = useState(false);
   const { t, language } = useLanguage();
@@ -1835,7 +1849,20 @@ const CarDetail = () => {
                 <div className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Inspectée et prête' : 'Inspected & Ready'}</div>
               </div>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter mb-4 uppercase italic leading-[0.9]">{car.make} <br /> <span className="crimson-text">{car.model}</span></h1>
-              <p className="text-3xl sm:text-4xl font-black text-white italic drop-shadow-[0_0_15px_rgba(220,38,38,0.3)] mb-6">${car.price.toLocaleString()}</p>
+              {sale && car.status !== 'sold' ? (
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <p className="text-xl sm:text-2xl text-white/35 line-through font-medium">${car.originalPrice!.toLocaleString()}</p>
+                    <p className="text-3xl sm:text-4xl font-black text-white italic drop-shadow-[0_0_15px_rgba(220,38,38,0.3)]">${car.price.toLocaleString()}</p>
+                    <span className="bg-red-600 text-white text-xs sm:text-sm font-black uppercase px-3 py-1 rounded tracking-wider shadow-[0_0_20px_rgba(220,38,38,0.5)]">
+                      {t('detail.sale_save')} ${sale.save.toLocaleString()} (-{sale.pct}%)
+                    </span>
+                  </div>
+                  <p className="text-[11px] sm:text-xs text-red-400/90 font-black uppercase tracking-widest mt-2">{t('detail.sale_urgency')}</p>
+                </div>
+              ) : (
+                <p className="text-3xl sm:text-4xl font-black text-white italic drop-shadow-[0_0_15px_rgba(220,38,38,0.3)] mb-6">${car.price.toLocaleString()}</p>
+              )}
 
               {car.status === 'sold' && (
                 <div className="mb-6 bg-white/5 border border-white/20 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -2012,6 +2039,14 @@ const CarDetail = () => {
 
       {/* Sticky mobile CTA bar — car detail pages only, thumb-reachable */}
       <div className="fixed bottom-0 inset-x-0 z-40 md:hidden">
+        {sale && car.status !== 'sold' && (
+          <div className="bg-red-600 text-white text-center py-1.5 px-3">
+            <span className="text-[11px] font-black uppercase tracking-widest">
+              <span className="line-through opacity-70 mr-2">${car.originalPrice!.toLocaleString()}</span>
+              ${car.price.toLocaleString()} — {t('detail.sale_save')} ${sale.save.toLocaleString()}
+            </span>
+          </div>
+        )}
         <div className="grid grid-cols-3 border-t border-white/10 bg-black/92 backdrop-blur-xl" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
           <button
             onClick={() => leadBus.open('call')}
