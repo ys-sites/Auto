@@ -1613,7 +1613,7 @@ const Inventory = () => {
     <div className="pt-20 sm:pt-40 pb-20 container mx-auto px-4 sm:px-10">
       <SectionReveal className="mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-2 sm:mb-4 uppercase">{language === 'fr' ? "NOTRE" : 'CURRENT'} <span className="crimson-text uppercase">{t('nav.inventory')}</span></h1>
-        <p className="text-white/50 text-base sm:text-lg font-medium">{language === 'fr' ? `Parcourez nos ${carData.length} autos disponibles — inspectées et prêtes à partir.` : `Browse our ${carData.length} available cars — inspected and ready to go.`}</p>
+        <p className="text-white/50 text-base sm:text-lg font-medium">{language === 'fr' ? `Parcourez nos ${carData.length} autos — inspectées et prêtes à partir.` : `Browse our ${carData.length} cars — inspected and ready to go.`}</p>
       </SectionReveal>
 
       <SectionReveal className="glass p-6 sm:p-10 rounded-2xl flex flex-col lg:flex-row items-stretch lg:items-end justify-between gap-6 sm:gap-10 mb-12 sm:mb-16 shadow-2xl relative overflow-hidden group border-white/5">
