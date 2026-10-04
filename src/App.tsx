@@ -908,9 +908,96 @@ const HowItWorks = () => {
   );
 };
 
+// --- Call modal: hero "Call" button opens a name+phone form first.
+// On submit the lead goes to BOTH inboxes, then the phone call is placed.
+const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+  const { t } = useLanguage();
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !phone.trim()) return;
+    setSending(true);
+    try {
+      await submitLead(
+        { name: name.trim(), phone: phone.trim(), source: 'hero_call_button' },
+        '📞 Call request — AK Flips website'
+      );
+    } catch {
+      // Lead failed to send — still place the call, tracking is best-effort here.
+    }
+    setSending(false);
+    onClose();
+    window.location.href = SITE.phoneHref;
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        >
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={onClose} />
+          <motion.div
+            initial={{ scale: 0.92, y: 24 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.92, y: 24 }}
+            transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+            className="relative glass rounded-2xl p-6 sm:p-8 w-full max-w-sm border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)]"
+          >
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="w-12 h-12 rounded-full crimson-bg flex items-center justify-center mb-4 shadow-[0_0_25px_rgba(220,38,38,0.4)]">
+              <Phone className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-2xl font-black text-white uppercase tracking-tight">{t('callModal.title')}</h3>
+            <p className="text-white/50 text-sm mt-1 mb-6">{t('callModal.subtitle')}</p>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Input
+                placeholder={t('callModal.name')}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12"
+              />
+              <Input
+                placeholder={t('callModal.phone')}
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12"
+              />
+              <Button
+                type="submit"
+                disabled={sending}
+                className="w-full crimson-bg rounded-none font-black text-base py-6 hover:bg-red-700 transition-all border-none"
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                {sending ? t('callModal.sending') : t('callModal.submit')}
+              </Button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const Home = () => {
   const featuredCars = carData.slice(0, 5);
   const { t, language } = useLanguage();
+  const [callOpen, setCallOpen] = useState(false);
   const steps = translations[language].process.steps;
   const stepIcons = [Search, Wrench, KeyRound];
 
@@ -954,6 +1041,14 @@ const Home = () => {
                 asChild
               >
                 <Link to="/how-it-works">{t('hero.cta_learn')}</Link>
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => setCallOpen(true)}
+                className="px-6 sm:px-10 py-4 sm:py-7 rounded-none font-black text-base sm:text-xl bg-white text-black hover:bg-white/85 transition-all hover:scale-105 border-none"
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                {t('hero.cta_call')}
               </Button>
             </div>
           </motion.div>
@@ -1127,6 +1222,7 @@ const Home = () => {
       <TrustSection />
       <TestimonialSection />
       <ContactSection />
+      <CallModal open={callOpen} onClose={() => setCallOpen(false)} />
     </div>
   );
 };

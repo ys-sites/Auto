@@ -15,7 +15,16 @@ export const translations = {
       title_extraordinary: "Priced Right.",
       description: "Hand-picked, fully inspected and reconditioned used cars — priced fairly and sold fast. No dealership games, just good cars.",
       cta_showroom: "BROWSE CARS",
-      cta_learn: "HOW IT WORKS"
+      cta_learn: "HOW IT WORKS",
+      cta_call: "CALL NOW"
+    },
+    callModal: {
+      title: "Call AK Flips",
+      subtitle: "Drop your name and number first — then your call goes straight through.",
+      name: "Full Name",
+      phone: "Phone Number",
+      submit: "CALL NOW",
+      sending: "SENDING..."
     },
     filters: {
       all: "All Cars",
@@ -107,7 +116,16 @@ export const translations = {
       title_extraordinary: "Au juste prix.",
       description: "Des voitures d'occasion triées sur le volet, entièrement inspectées et remises à neuf — à prix juste, vendues rapidement. Sans jeux de concessionnaire.",
       cta_showroom: "VOIR LES AUTOS",
-      cta_learn: "COMMENT ÇA MARCHE"
+      cta_learn: "COMMENT ÇA MARCHE",
+      cta_call: "APPELEZ-NOUS"
+    },
+    callModal: {
+      title: "Appelez AK Flips",
+      subtitle: "Laissez votre nom et numéro — ensuite votre appel passe directement.",
+      name: "Nom complet",
+      phone: "Numéro de téléphone",
+      submit: "APPELER",
+      sending: "ENVOI..."
     },
     filters: {
       all: "Toutes les autos",
