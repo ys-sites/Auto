@@ -1428,8 +1428,6 @@ const Home = () => {
         </div>
       </section>
 
-      <RecentlySoldStrip />
-
       {/* How It Works teaser */}
       <section id="process" className="py-32 sm:py-40 relative px-4 sm:px-6 overflow-hidden border-t border-white/5">
         <div className="container mx-auto">
