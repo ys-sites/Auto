@@ -1727,59 +1727,6 @@ const VdpCtaCluster = ({ carId }: { carId: string }) => {
   );
 };
 
-// --- Monthly payment estimator: pure client-side, estimate only.
-const PaymentEstimator = ({ price }: { price: number }) => {
-  const { t, language } = useLanguage();
-  const [down, setDown] = useState(Math.round(price * 0.1));
-  const [rate, setRate] = useState(7.99);
-  const [term, setTerm] = useState(60);
-
-  const principal = Math.max(price - down, 0);
-  const r = rate / 100 / 12;
-  const monthly = r > 0 ? (principal * r) / (1 - Math.pow(1 + r, -term)) : principal / term;
-
-  const sliderClass = "w-full accent-red-600 h-2 cursor-pointer";
-
-  return (
-    <div className="glass p-6 sm:p-8 rounded-2xl border-white/5 space-y-6">
-      <div>
-        <p className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em] mb-2">{t('detail.estimator_tag')}</p>
-        <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tighter italic">{t('detail.estimator_title')}</h4>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
-            <span>{t('detail.estimator_down')}</span>
-            <span className="text-white">${down.toLocaleString()}</span>
-          </div>
-          <input type="range" min={0} max={price} step={500} value={down} onChange={(e) => setDown(Number(e.target.value))} className={sliderClass} aria-label={t('detail.estimator_down')} />
-        </div>
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
-            <span>{t('detail.estimator_rate')}</span>
-            <span className="text-white">{rate.toFixed(2)}%</span>
-          </div>
-          <input type="range" min={0} max={20} step={0.25} value={rate} onChange={(e) => setRate(Number(e.target.value))} className={sliderClass} aria-label={t('detail.estimator_rate')} />
-        </div>
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
-            <span>{t('detail.estimator_term')}</span>
-            <span className="text-white">{term} {t('detail.estimator_months')}</span>
-          </div>
-          <input type="range" min={12} max={84} step={12} value={term} onChange={(e) => setTerm(Number(e.target.value))} className={sliderClass} aria-label={t('detail.estimator_term')} />
-        </div>
-      </div>
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pt-4 border-t border-white/10">
-        <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">{t('detail.estimator_result')}</p>
-        <p className="text-4xl sm:text-5xl font-black text-white italic tabular-nums">
-          ${monthly.toFixed(0)}<span className="text-lg text-white/40 not-italic font-bold">/{language === 'fr' ? 'mois' : 'mo'}</span>
-        </p>
-      </div>
-      <p className="text-[11px] text-white/30 leading-relaxed">{t('detail.estimator_disclaimer')}</p>
-    </div>
-  );
-};
-
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
   const car = carData.find(c => c.id === id);
@@ -1948,8 +1895,11 @@ const CarDetail = () => {
               </ul>
             </div>
 
-            {/* Payment estimator */}
-            <PaymentEstimator price={car.price} />
+            {/* One-price promise: no financing, no interest, no games */}
+            <div className="glass p-5 sm:p-6 rounded-2xl border-white/5 flex items-center gap-4">
+              <Tag className="w-8 h-8 text-crimson shrink-0" />
+              <p className="text-sm sm:text-base text-white/70 font-medium leading-relaxed">{t('detail.price_note')}</p>
+            </div>
 
             {/* Contact Form */}
             <div className="glass p-5 sm:p-8 rounded-2xl border-white/5 shadow-2xl">

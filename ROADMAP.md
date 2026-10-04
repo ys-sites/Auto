@@ -56,8 +56,7 @@ SEO Discovery / Wooflo (automotive SEO guides), Splitbase + ScreenRoot (mobile C
 11. **Video walkaround per car** (phone-shot, 60–90s, YouTube embed). The
     research is blunt: video is a conversion tool, not a luxury. Gives ~90%
     of a 360° spin's trust for ~10% of the effort, plus YouTube SEO.
-12. **Monthly-payment estimator** (pure client-side calc + disclaimer). Many
-    buyers shop by payment, not price. No backend needed.
+12. **Monthly-payment estimator** — REMOVED 2026-10-04 per client direction: no financing, no interest, no monthly/annual payments anywhere. VDP now shows one straightforward price + a "no financing, no interest, no hidden fees" note instead.
 13. **"Reserve this car" CTA** — hold the car with a refundable deposit,
     routed into the existing lead-modal flow.
 14. **FAQ block + FAQ schema.** "Do you offer financing?", "Can I see the
