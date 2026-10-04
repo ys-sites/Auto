@@ -346,31 +346,27 @@ const Footer = () => {
 };
 
 const testimonials = [
-  // ═══════════════════════════════════════════════════════════════════════
-  // ⚠️ PLACEHOLDERS — the entries below are SAMPLE testimonials, not real
-  // buyer quotes. The client MUST replace them with real buyer names, cars
-  // and quotes before launch. Fake testimonials can violate ad standards.
-  // ═══════════════════════════════════════════════════════════════════════
+  // Real 5-star reviews from the seller's Facebook Marketplace profile.
   {
-    name: "Karim B.",
+    name: "Shohan",
     role: "en" as Language,
-    quoteEn: "Bought the Civic off AK last month. Car was exactly as described, fresh brakes, super clean. Easiest car purchase I've ever made.",
-    quoteFr: "J'ai acheté la Civic à AK le mois dernier. L'auto était exactement comme décrite, freins neufs, super propre. L'achat le plus simple que j'ai fait.",
-    asset: "2019 Honda Civic LX"
+    quoteEn: "Very honest highly recommend!!!",
+    quoteFr: "Très honnête, je recommande fortement !!!",
+    asset: "Facebook Marketplace review"
   },
   {
-    name: "Sophie L.",
+    name: "Simon",
     role: "en" as Language,
-    quoteEn: "He sent me the Carfax before I even asked and answered every question the same day. You can tell he actually cares about the cars he flips.",
-    quoteFr: "Il m'a envoyé le Carfax avant même que je le demande et a répondu à toutes mes questions le jour même. On voit qu'il tient à ses autos.",
-    asset: "2018 Toyota Corolla LE"
+    quoteEn: "Very honest guy, good prices and good customer service. Definitely recommend.",
+    quoteFr: "Gars très honnête, bons prix et bon service à la clientèle. Je recommande définitivement.",
+    asset: "Facebook Marketplace review"
   },
   {
-    name: "Jean-Marc D.",
+    name: "Leo",
     role: "en" as Language,
-    quoteEn: "Fair price, no pressure, and the Rogue drives perfect through winter. I'd buy from Auto Khawaja again without hesitation.",
-    quoteFr: "Prix juste, aucune pression, et le Rogue roule parfaitement l'hiver. J'achèterais chez Auto Khawaja encore sans hésiter.",
-    asset: "2016 Nissan Rogue SV"
+    quoteEn: "I definitely recommend this seller, as their exceptional communication skills, and comprehensive assistance truly enhance the overall transaction experience.",
+    quoteFr: "Je recommande définitivement ce vendeur — son excellente communication et son aide complète rendent toute la transaction bien meilleure.",
+    asset: "Facebook Marketplace review"
   }
 ];
 
@@ -687,8 +683,7 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
               <div className="flex gap-4 text-[11px] text-white/40 font-medium mb-6">
                 <span>{car.year}</span>
-                <span>•</span>
-                <span>{car.mileage.toLocaleString()} km</span>
+                {car.mileage != null && (<><span>•</span><span>{car.mileage.toLocaleString()} km</span></>)}
                 <span>•</span>
                 <span>{car.transmission}</span>
               </div>
@@ -1610,7 +1605,7 @@ const Inventory = () => {
     setFilteredCars(result);
   }, [searchTerm, selectedType, priceRange]);
 
-  const carTypes = ['All', 'SUV', 'Sedan'];
+  const carTypes = ['All', 'SUV', 'Sedan', 'Hatchback', 'Wagon', 'Minivan', 'Coupe'];
 
   return (
     <div className="pt-20 sm:pt-40 pb-20 container mx-auto px-4 sm:px-10">
@@ -1695,34 +1690,75 @@ const Inventory = () => {
   );
 };
 
-// --- VDP CTA cluster: Call / Instagram DM / Reserve, repeated 3x on the car page.
-const VdpCtaCluster = ({ carId }: { carId: string }) => {
-  const { t } = useLanguage();
+// --- VDP CTA: contact form only on car pages (no call / Instagram here).
+// Site-wide header/footer/contact keep their call + Instagram buttons.
+const scrollToVdpForm = () => {
+  document.getElementById('vdp-contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+const VdpCtaCluster = () => {
+  const { t, language } = useLanguage();
   return (
     <div className="space-y-4">
       <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] text-center sm:text-left">
         {t('detail.cta_cluster_title')}
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Button
-          onClick={() => leadBus.open('call')}
-          className="crimson-bg rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-red-700 transition-all border-none"
-        >
-          <Phone className="w-4 h-4 mr-2" /> {t('detail.cta_call')}
-        </Button>
-        <Button
-          onClick={() => leadBus.open('instagram')}
-          className="glass rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-white/10 border-white/20 bg-transparent text-white transition-all"
-        >
-          <Instagram className="w-4 h-4 mr-2" /> {t('detail.cta_dm')}
-        </Button>
-        <Button
-          onClick={() => leadBus.open('call', `contact_reserve:${carId}`)}
-          className="bg-white text-black rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-white/85 transition-all border-none"
-        >
-          <KeyRound className="w-4 h-4 mr-2" /> {t('detail.cta_reserve')}
-        </Button>
-      </div>
+      <Button
+        onClick={scrollToVdpForm}
+        className="w-full crimson-bg rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-red-700 transition-all border-none"
+      >
+        <Mail className="w-4 h-4 mr-2" /> {language === 'fr' ? 'Je suis intéressé' : "I'm Interested"}
+      </Button>
+    </div>
+  );
+};
+
+// --- VDP photo gallery: main photo + thumbnail strip (FB listing photos).
+const CarGallery = ({ car }: { car: Car }) => {
+  const photos = car.images && car.images.length > 0 ? car.images : [car.image];
+  const [active, setActive] = useState(0);
+  const isSold = car.status === 'sold';
+  const { language } = useLanguage();
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <motion.div
+        key={photos[active]}
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="rounded-none overflow-hidden aspect-[16/10] relative glass border border-white/5"
+      >
+        <img
+          src={photos[active]}
+          className={`w-full h-full object-cover ${isSold ? 'grayscale' : ''}`}
+          alt={`${car.year} ${car.make} ${car.model} — photo ${active + 1}`}
+        />
+        {isSold && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+            <span className="text-3xl font-black text-white uppercase tracking-[0.3em] italic border-4 border-white/80 px-6 py-2 -rotate-6">
+              {language === 'fr' ? 'Vendue' : 'Sold'}
+            </span>
+          </div>
+        )}
+        {photos.length > 1 && (
+          <div className="absolute bottom-3 right-3 bg-black/70 text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
+            {active + 1} / {photos.length}
+          </div>
+        )}
+      </motion.div>
+      {photos.length > 1 && (
+        <div className="grid grid-cols-5 gap-2 sm:gap-3">
+          {photos.map((src, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className={`aspect-[16/10] overflow-hidden border transition-all ${i === active ? 'border-red-600 ring-2 ring-red-600/40' : 'border-white/10 opacity-60 hover:opacity-100'}`}
+              aria-label={`Photo ${i + 1}`}
+            >
+              <img src={src} className="w-full h-full object-cover" alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -1768,20 +1804,7 @@ const CarDetail = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
           {/* Gallery */}
-          <div className="space-y-4 sm:space-y-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="rounded-none overflow-hidden aspect-[16/10] relative glass border border-white/5"
-            >
-              <img
-                src={car.image}
-                className="w-full h-full object-cover"
-                alt={`${car.year} ${car.make} ${car.model}`}
-              />
-            </motion.div>
-          </div>
+          <CarGallery car={car} />
 
           {/* Details */}
           <div className="space-y-10">
@@ -1819,7 +1842,7 @@ const CarDetail = () => {
                   <div className="space-y-2">
                     <p className="text-white/60 text-sm font-medium">{t('detail.sold_desc')}</p>
                     <Button
-                      onClick={() => leadBus.open('call', `contact_similar:${car.id}`)}
+                      onClick={scrollToVdpForm}
                       className="crimson-bg rounded-none font-black text-xs uppercase tracking-widest px-6 py-3 hover:bg-red-700 transition-all border-none"
                     >
                       {t('detail.sold_cta')}
@@ -1830,14 +1853,16 @@ const CarDetail = () => {
 
               {/* CTA cluster — spot 1 of 3 */}
               <div className="mb-8">
-                <VdpCtaCluster carId={car.id} />
+                <VdpCtaCluster />
               </div>
 
               <div className="grid grid-cols-2 gap-4 sm:gap-8 py-8 border-t border-white/10">
+                {car.mileage != null && (
                 <div className="space-y-1">
                   <p className="text-white/40 uppercase font-bold text-[9px] sm:text-[10px] tracking-widest">{language === 'fr' ? 'Kilométrage' : 'Mileage'}</p>
                   <p className="text-base sm:text-lg text-white font-bold">{car.mileage.toLocaleString()} km</p>
                 </div>
+                )}
                 <div className="space-y-1">
                   <p className="text-white/40 uppercase font-bold text-[9px] sm:text-[10px] tracking-widest leading-none mb-1">{language === 'fr' ? 'Carburant' : 'Fuel'}</p>
                   <p className="text-base sm:text-lg text-white font-black">{language === 'fr' ? 'Essence' : car.fuel}</p>
@@ -1873,7 +1898,7 @@ const CarDetail = () => {
 
             {/* CTA cluster — spot 2 of 3 */}
             <div className="glass p-6 sm:p-8 rounded-2xl border-white/5">
-              <VdpCtaCluster carId={car.id} />
+              <VdpCtaCluster />
             </div>
 
             {/* What we fixed — the flip story */}
@@ -1902,7 +1927,7 @@ const CarDetail = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="glass p-5 sm:p-8 rounded-2xl border-white/5 shadow-2xl">
+            <div id="vdp-contact-form" className="glass p-5 sm:p-8 rounded-2xl border-white/5 shadow-2xl scroll-mt-28">
               <h3 className="text-lg sm:text-2xl font-black text-white tracking-tighter mb-4 sm:mb-8 uppercase italic leading-tight">{language === 'fr' ? 'INTÉRESSÉ PAR' : 'INTERESTED IN'} <br /> <span className="crimson-text underline">{language === 'fr' ? 'CETTE AUTO?' : 'THIS CAR?'}</span></h3>
               {formStatus === 'success' ? (
                 <div className="bg-crimson/10 border border-crimson/20 text-white p-5 sm:p-10 text-center space-y-4 rounded-xl">
@@ -1983,7 +2008,7 @@ const CarDetail = () => {
               </div>
             ))}
           </div>
-          <VdpCtaCluster carId={car.id} />
+          <VdpCtaCluster />
         </div>
       </div>
 
@@ -1997,27 +2022,13 @@ const CarDetail = () => {
             </span>
           </div>
         )}
-        <div className="grid grid-cols-3 border-t border-white/10 bg-black/92 backdrop-blur-xl" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="border-t border-white/10 bg-black/92 backdrop-blur-xl" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
           <button
-            onClick={() => leadBus.open('call')}
-            className="flex flex-col items-center justify-center gap-1 py-3 text-white active:bg-white/10 transition-colors"
+            onClick={scrollToVdpForm}
+            className="w-full flex items-center justify-center gap-2 py-4 text-white crimson-bg active:bg-red-700 transition-colors"
           >
-            <Phone className="w-5 h-5 crimson-text" />
-            <span className="text-[10px] font-black uppercase tracking-widest">{t('detail.sticky_call')}</span>
-          </button>
-          <button
-            onClick={() => leadBus.open('instagram')}
-            className="flex flex-col items-center justify-center gap-1 py-3 text-white border-x border-white/10 active:bg-white/10 transition-colors"
-          >
-            <Instagram className="w-5 h-5 crimson-text" />
-            <span className="text-[10px] font-black uppercase tracking-widest">{t('detail.sticky_dm')}</span>
-          </button>
-          <button
-            onClick={() => leadBus.open('call', `contact_reserve:${car.id}`)}
-            className="flex flex-col items-center justify-center gap-1 py-3 text-white crimson-bg active:bg-red-700 transition-colors"
-          >
-            <KeyRound className="w-5 h-5" />
-            <span className="text-[10px] font-black uppercase tracking-widest">{t('detail.sticky_reserve')}</span>
+            <Mail className="w-5 h-5" />
+            <span className="text-xs font-black uppercase tracking-widest">{language === 'fr' ? 'Je suis intéressé' : "I'm Interested"}</span>
           </button>
         </div>
       </div>
