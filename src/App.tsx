@@ -916,19 +916,19 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
   const [phone, setPhone] = useState('');
   const [sending, setSending] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
     setSending(true);
-    try {
-      await submitLead(
-        { name: name.trim(), phone: phone.trim(), source: 'hero_call_button' },
-        '📞 Call request — AK Flips website'
-      );
-    } catch {
-      // Lead failed to send — still place the call, tracking is best-effort here.
-    }
-    setSending(false);
+    // Fire the lead without awaiting: awaiting would break the user-gesture
+    // chain and mobile browsers would block the tel: navigation below.
+    // The page stays alive behind the phone app, so the request completes.
+    submitLead(
+      { name: name.trim(), phone: phone.trim(), source: 'hero_call_button' },
+      '📞 Call request — AK Flips website'
+    ).catch(() => {
+      // Lead failed to send — the call still goes through.
+    });
     onClose();
     window.location.href = SITE.phoneHref;
   };
@@ -948,7 +948,7 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.92, y: 24 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className="relative glass rounded-2xl p-6 sm:p-8 w-full max-w-sm border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)]"
+            className="relative glass rounded-2xl p-6 sm:p-8 w-full max-w-sm max-h-[90dvh] overflow-y-auto border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)]"
           >
             <button
               onClick={onClose}
@@ -968,7 +968,7 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12"
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12 text-base"
               />
               <Input
                 placeholder={t('callModal.phone')}
@@ -976,7 +976,7 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
-                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12"
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12 text-base"
               />
               <Button
                 type="submit"
