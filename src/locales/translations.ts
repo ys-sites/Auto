@@ -28,7 +28,7 @@ export const translations = {
     },
     leadModal: {
       call: {
-        title: "Call AK Flips",
+        title: "Call Auto Khawaja",
         subtitle: "Drop your name and number first — then your call goes straight through.",
         submit: "CALL NOW",
         sending: "SENDING..."
@@ -44,7 +44,7 @@ export const translations = {
         openDirect: "or open the chat directly"
       },
       email: {
-        title: "Email AK Flips",
+        title: "Email Auto Khawaja",
         subtitle: "Leave your name and number first — then your email app opens.",
         submit: "OPEN EMAIL",
         sending: "SENDING..."
@@ -69,7 +69,7 @@ export const translations = {
       tag: "How It Works",
       title: "From Our Hands",
       title_accent: "To Your Driveway",
-      description: "Every AK Flips car goes through the same three steps before it ever gets listed.",
+      description: "Every Auto Khawaja car goes through the same three steps before it ever gets listed.",
       steps: [
         { title: "We Hunt", desc: "We scour the market for the best used cars in Montreal — low mileage, clean history, solid bones." },
         { title: "We Recondition", desc: "Full inspection, brakes, tires, fluids and a deep detail. Everything fixed before the car is listed." },
@@ -134,7 +134,7 @@ export const translations = {
       cta_cluster_title: "Like this car? Act fast — good flips don't wait.",
       what_fixed_tag: "The flip story",
       what_fixed_title: "WHAT WE FIXED",
-      what_fixed_desc: "Every AK Flips car gets reconditioned before it's listed. Here's exactly what we did to this one.",
+      what_fixed_desc: "Every Auto Khawaja car gets reconditioned before it's listed. Here's exactly what we did to this one.",
       price_note: "One straightforward price — no financing, no interest, no hidden fees. What you see is what you pay.",
       sticky_call: "Call",
       sticky_dm: "DM",
@@ -211,7 +211,7 @@ export const translations = {
     },
     leadModal: {
       call: {
-        title: "Appelez AK Flips",
+        title: "Appelez Auto Khawaja",
         subtitle: "Laissez votre nom et numéro — ensuite votre appel passe directement.",
         submit: "APPELER",
         sending: "ENVOI..."
@@ -227,7 +227,7 @@ export const translations = {
         openDirect: "ou ouvrir la discussion directement"
       },
       email: {
-        title: "Écrivez à AK Flips",
+        title: "Écrivez à Auto Khawaja",
         subtitle: "Laissez votre nom et numéro — ensuite votre application courriel s'ouvre.",
         submit: "OUVRIR COURRIEL",
         sending: "ENVOI..."
@@ -252,7 +252,7 @@ export const translations = {
       tag: "Comment ça marche",
       title: "De nos mains",
       title_accent: "À votre entrée",
-      description: "Chaque auto AK Flips passe par les mêmes trois étapes avant d'être affichée.",
+      description: "Chaque auto Auto Khawaja passe par les mêmes trois étapes avant d'être affichée.",
       steps: [
         { title: "On déniche", desc: "On parcourt le marché pour trouver les meilleures autos d'occasion à Montréal — bas kilométrage, historique propre." },
         { title: "On remet à neuf", desc: "Inspection complète, freins, pneus, fluides et nettoyage en profondeur. Tout est réglé avant l'affichage." },
@@ -317,7 +317,7 @@ export const translations = {
       cta_cluster_title: "Elle vous plaît? Faites vite — les bonnes affaires ne durent pas.",
       what_fixed_tag: "L'histoire de la remise à neuf",
       what_fixed_title: "CE QU'ON A RÉPARÉ",
-      what_fixed_desc: "Chaque auto AK Flips est remise à neuf avant d'être affichée. Voici exactement ce qu'on a fait sur celle-ci.",
+      what_fixed_desc: "Chaque auto Auto Khawaja est remise à neuf avant d'être affichée. Voici exactement ce qu'on a fait sur celle-ci.",
       price_note: "Un prix simple et direct — pas de financement, pas d'intérêts, pas de frais cachés. Ce que vous voyez est ce que vous payez.",
       sticky_call: "Appeler",
       sticky_dm: "DM",

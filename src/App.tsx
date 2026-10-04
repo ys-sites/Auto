@@ -19,7 +19,7 @@ import ElasticSlider from './components/ElasticSlider/ElasticSlider';
 // --- Site constants (single source of truth) ---
 
 export const SITE = {
-  name: 'AK Flips',
+  name: 'Auto Khawaja',
   tagline: 'Flipped Right. Priced Right.',
   email: 'Abdullahkhawaja2004@gmail.com',
   phone: '+1 (514) 812-1406',
@@ -50,7 +50,7 @@ interface LeadResult {
 
 const submitLead = async (payload: Record<string, unknown>, subject?: string): Promise<LeadResult> => {
   const body = JSON.stringify({
-    _subject: subject || 'New lead — AK Flips website',
+    _subject: subject || 'New lead — Auto Khawaja website',
     _template: 'table',
     _captcha: 'false',
     ...payload,
@@ -95,7 +95,7 @@ const notifyEvent = (event: string, subject: string, note: string) => {
 };
 
 const notifyEmailCopy = () =>
-  notifyEvent('email_copy', '✉️ Email copied — AK Flips website', 'A visitor copied the email address from the AK Flips website.');
+  notifyEvent('email_copy', '✉️ Email copied — Auto Khawaja website', 'A visitor copied the email address from the Auto Khawaja website.');
 
 // --- Lead bus: tapping call / Instagram / email anywhere opens the lead modal.
 type LeadMode = 'call' | 'instagram' | 'email';
@@ -218,7 +218,7 @@ const Navbar = () => {
     <nav className={`fixed top-0 w-full z-50 h-16 sm:h-20 transition-all duration-300 px-4 sm:px-6 md:px-10 flex items-center justify-between border-white/10 shrink-0 ${isScrolled ? 'bg-charcoal/95 backdrop-blur-md shadow-lg border-b' : 'bg-transparent border-b'}`}>
       <div className="flex items-center gap-2">
         <Link to="/" className="flex items-center gap-3">
-          <img src={SITE.logo} alt="AK Flips logo" className="w-9 h-9 sm:w-11 sm:h-11 rounded-full object-cover ring-2 ring-red-600/60 shadow-[0_0_20px_rgba(220,38,38,0.35)]" />
+          <img src={SITE.logo} alt="Auto Khawaja logo" className="w-9 h-9 sm:w-11 sm:h-11 rounded-full object-cover ring-2 ring-red-600/60 shadow-[0_0_20px_rgba(220,38,38,0.35)]" />
           <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-white uppercase">
             AK <span className="crimson-text">FLIPS</span>
           </span>
@@ -285,7 +285,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-24">
           <div className="md:col-span-1 space-y-8">
             <div className="flex items-center gap-3">
-              <img src={SITE.logo} alt="AK Flips logo" className="w-12 h-12 rounded-full object-cover ring-2 ring-red-600/60 shadow-lg" />
+              <img src={SITE.logo} alt="Auto Khawaja logo" className="w-12 h-12 rounded-full object-cover ring-2 ring-red-600/60 shadow-lg" />
               <span className="text-2xl font-black tracking-tight text-white uppercase">AK <span className="crimson-text">FLIPS</span></span>
             </div>
             <p className="text-white/40 leading-relaxed font-medium">{t('footer.tagline')}</p>
@@ -368,8 +368,8 @@ const testimonials = [
   {
     name: "Jean-Marc D.",
     role: "en" as Language,
-    quoteEn: "Fair price, no pressure, and the Rogue drives perfect through winter. I'd buy from AK Flips again without hesitation.",
-    quoteFr: "Prix juste, aucune pression, et le Rogue roule parfaitement l'hiver. J'achèterais chez AK Flips encore sans hésiter.",
+    quoteEn: "Fair price, no pressure, and the Rogue drives perfect through winter. I'd buy from Auto Khawaja again without hesitation.",
+    quoteFr: "Prix juste, aucune pression, et le Rogue roule parfaitement l'hiver. J'achèterais chez Auto Khawaja encore sans hésiter.",
     asset: "2016 Nissan Rogue SV"
   }
 ];
@@ -452,7 +452,7 @@ const ContactSection = () => {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const result = await submitLead(payload, 'New contact lead — AK Flips website');
+      const result = await submitLead(payload, 'New contact lead — Auto Khawaja website');
       setPartial(result.partial);
       setStatus('success');
     } catch (error) {
@@ -811,7 +811,7 @@ const SellYourCar = () => {
     }
 
     try {
-      const result = await submitLead(payload, 'Sell-my-car lead — AK Flips website');
+      const result = await submitLead(payload, 'Sell-my-car lead — Auto Khawaja website');
       setPartial(result.partial);
       setStatus('success');
     } catch (error) {
@@ -1002,9 +1002,9 @@ const HowItWorks = () => {
 // --- Universal lead modal: tapping call / Instagram / email opens a name+phone
 // form first. On submit the lead goes to BOTH inboxes, then the action runs.
 const LEAD_SUBJECT: Record<LeadMode, string> = {
-  call: '📞 Call request — AK Flips website',
-  instagram: '📸 Instagram chat request — AK Flips website',
-  email: '✉️ Email request — AK Flips website',
+  call: '📞 Call request — Auto Khawaja website',
+  instagram: '📸 Instagram chat request — Auto Khawaja website',
+  email: '✉️ Email request — Auto Khawaja website',
 };
 
 const LEAD_ICON: Record<LeadMode, typeof Phone> = {
@@ -1040,7 +1040,7 @@ const LeadModal = ({ open, mode, source, onClose }: { open: boolean; mode: LeadM
     const text = t('instagram.dmOpener');
     if (navigator.share) {
       try {
-        await navigator.share({ title: 'AK Flips', text });
+        await navigator.share({ title: 'Auto Khawaja', text });
         return;
       } catch {
         // cancelled or failed — fall through to direct DM link
@@ -1544,7 +1544,7 @@ const PriceAlertsForm = () => {
     const payload: Record<string, unknown> = Object.fromEntries(formData.entries());
     payload.source = 'price_alert';
     try {
-      await submitLead(payload, 'Price alert signup — AK Flips website');
+      await submitLead(payload, 'Price alert signup — Auto Khawaja website');
       setStatus('success');
     } catch {
       setStatus('error');
@@ -1750,7 +1750,7 @@ const CarDetail = () => {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const result = await submitLead(payload, `Car inquiry — ${car.year} ${car.make} ${car.model} — AK Flips`);
+      const result = await submitLead(payload, `Car inquiry — ${car.year} ${car.make} ${car.model} — Auto Khawaja`);
       setPartial(result.partial);
       setFormStatus('success');
     } catch (error) {
@@ -2030,7 +2030,7 @@ const NotFound = () => {
   const { t } = useLanguage();
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-20 space-y-6">
-      <img src={SITE.logo} alt="AK Flips logo" className="w-20 h-20 rounded-full object-cover ring-2 ring-red-600/60 shadow-[0_0_30px_rgba(220,38,38,0.35)]" />
+      <img src={SITE.logo} alt="Auto Khawaja logo" className="w-20 h-20 rounded-full object-cover ring-2 ring-red-600/60 shadow-[0_0_30px_rgba(220,38,38,0.35)]" />
       <h1 className="text-7xl sm:text-8xl font-black text-white tracking-tighter">404</h1>
       <h2 className="text-2xl sm:text-3xl font-black text-white uppercase">{t('notfound.title')}</h2>
       <p className="text-white/50 max-w-md">{t('notfound.text')}</p>
@@ -2053,13 +2053,13 @@ const DocumentTitle = () => {
   const { language } = useLanguage();
   useEffect(() => {
     const fr = language === 'fr';
-    let title = fr ? "AK Flips | Autos d'occasion de qualité à Montréal" : 'AK Flips | Quality Used Cars in Montreal';
-    if (pathname === '/inventory') title = fr ? "Inventaire | AK Flips" : 'Inventory | AK Flips';
-    else if (pathname === '/sell') title = fr ? "Vendez votre auto | AK Flips" : 'Sell Your Car | AK Flips';
-    else if (pathname === '/how-it-works') title = fr ? "Comment ça marche | AK Flips" : 'How It Works | AK Flips';
+    let title = fr ? "Auto Khawaja | Autos d'occasion de qualité à Montréal" : 'Auto Khawaja | Quality Used Cars in Montreal';
+    if (pathname === '/inventory') title = fr ? "Inventaire | Auto Khawaja" : 'Inventory | Auto Khawaja';
+    else if (pathname === '/sell') title = fr ? "Vendez votre auto | Auto Khawaja" : 'Sell Your Car | Auto Khawaja';
+    else if (pathname === '/how-it-works') title = fr ? "Comment ça marche | Auto Khawaja" : 'How It Works | Auto Khawaja';
     else if (pathname.startsWith('/cars/')) {
       const car = carData.find((c) => c.id === pathname.split('/')[2]);
-      if (car) title = `${car.year} ${car.make} ${car.model} — $${car.price.toLocaleString('en-CA')} | AK Flips`;
+      if (car) title = `${car.year} ${car.make} ${car.model} — $${car.price.toLocaleString('en-CA')} | Auto Khawaja`;
     }
     document.title = title;
   }, [pathname, language]);
