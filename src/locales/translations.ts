@@ -122,7 +122,67 @@ export const translations = {
       specs: "Specifications",
       features: "Key Features",
       back: "Back to Inventory",
-      just_flipped: "Just Flipped"
+      just_flipped: "Just Flipped",
+      cta_call: "CALL NOW",
+      cta_dm: "MESSAGE ON INSTAGRAM",
+      cta_reserve: "RESERVE THIS CAR",
+      cta_cluster_title: "Like this car? Act fast — good flips don't wait.",
+      what_fixed_tag: "The flip story",
+      what_fixed_title: "WHAT WE FIXED",
+      what_fixed_desc: "Every AK Flips car gets reconditioned before it's listed. Here's exactly what we did to this one.",
+      estimator_tag: "Payment estimator",
+      estimator_title: "WHAT WOULD IT COST MONTHLY?",
+      estimator_price: "Vehicle price",
+      estimator_down: "Down payment",
+      estimator_rate: "Annual interest rate",
+      estimator_term: "Term",
+      estimator_months: "months",
+      estimator_result: "Estimated monthly payment",
+      estimator_disclaimer: "Estimate only — not an offer of credit. AK Flips doesn't offer financing; check with your bank or lender for actual terms.",
+      sticky_call: "Call",
+      sticky_dm: "DM",
+      sticky_reserve: "Reserve",
+      sold: "SOLD",
+      sold_desc: "This one found a new home — but we flip cars like this every week.",
+      sold_cta: "FIND ME A SIMILAR ONE"
+    },
+    home: {
+      sold_tag: "Recently sold",
+      sold_title: "GONE IN DAYS",
+      sold_desc: "Real flips, real buyers. Good cars move fast here — average 9 days listed.",
+      faq_tag: "Questions",
+      faq_title: "BEFORE YOU ASK",
+      faq_items: [
+        { q: "Do you offer financing?", a: "No — we're flippers, not a lender. Most buyers pay cash or arrange their own loan with their bank. Use our payment estimator on any car page to see what the monthly would look like." },
+        { q: "Can I see the Carfax?", a: "Absolutely. Every car comes with its history report — ask us anytime and we'll send it before you even visit." },
+        { q: "Where do I view the car?", a: "We're based in Montreal. Message or call us to book a viewing — evenings and weekends work too." },
+        { q: "Is there a warranty?", a: "Each car is fully inspected and reconditioned before sale, and remaining factory warranty transfers where applicable. We'll be upfront about everything we know." },
+        { q: "Can I trade in my car?", a: "Yes — tell us about your car and we'll factor it into the deal. Check its market value with Canadian Black Book first so we start fair." }
+      ],
+      ig_tag: "Follow the flips",
+      ig_title: "WATCH CARS GET FLIPPED",
+      ig_desc: "New arrivals, before/afters and sold celebrations — it all happens on Instagram first.",
+      ig_cta: "FOLLOW @AK.FLIPS._"
+    },
+    alerts: {
+      tag: "Never miss a flip",
+      title: "GET NOTIFIED",
+      desc: "Tell us your budget — we'll email you the minute a car under your price hits the lot.",
+      name: "Your name",
+      email: "Email",
+      phone: "Phone (optional)",
+      max_price: "Max budget ($)",
+      submit: "NOTIFY ME",
+      sending: "SENDING...",
+      success_title: "YOU'RE ON THE LIST",
+      success_desc: "We'll reach out as soon as a matching car arrives."
+    },
+    tradein: {
+      tag: "Have a car to sell?",
+      title: "TRADE IT IN",
+      desc: "Already selling? Check your car's market value on Canadian Black Book, then bring us the number — we'll make you a straight offer.",
+      cta: "CHECK MY CAR'S VALUE",
+      note: "Free estimate • Takes 2 minutes"
     }
   },
   fr: {
@@ -246,7 +306,67 @@ export const translations = {
       specs: "Spécifications",
       features: "Caractéristiques clés",
       back: "Retour à l'inventaire",
-      just_flipped: "Fraîchement arrivée"
+      just_flipped: "Fraîchement arrivée",
+      cta_call: "APPELEZ-NOUS",
+      cta_dm: "MESSAGE INSTAGRAM",
+      cta_reserve: "RÉSERVER CETTE AUTO",
+      cta_cluster_title: "Elle vous plaît? Faites vite — les bonnes affaires ne durent pas.",
+      what_fixed_tag: "L'histoire de la remise à neuf",
+      what_fixed_title: "CE QU'ON A RÉPARÉ",
+      what_fixed_desc: "Chaque auto AK Flips est remise à neuf avant d'être affichée. Voici exactement ce qu'on a fait sur celle-ci.",
+      estimator_tag: "Estimateur de paiement",
+      estimator_title: "COMBIEN PAR MOIS?",
+      estimator_price: "Prix du véhicule",
+      estimator_down: "Acompte",
+      estimator_rate: "Taux d'intérêt annuel",
+      estimator_term: "Durée",
+      estimator_months: "mois",
+      estimator_result: "Paiement mensuel estimé",
+      estimator_disclaimer: "Estimation seulement — pas une offre de crédit. AK Flips n'offre pas de financement; vérifiez avec votre banque pour les conditions réelles.",
+      sticky_call: "Appeler",
+      sticky_dm: "DM",
+      sticky_reserve: "Réserver",
+      sold: "VENDUE",
+      sold_desc: "Celle-ci a trouvé un nouveau foyer — mais on revend des autos comme celle-ci chaque semaine.",
+      sold_cta: "TROUVEZ-M'EN UNE SEMBLABLE"
+    },
+    home: {
+      sold_tag: "Récemment vendues",
+      sold_title: "PARTIES EN QUELQUES JOURS",
+      sold_desc: "De vraies ventes, de vrais acheteurs. Les bonnes autos partent vite ici — 9 jours en vente en moyenne.",
+      faq_tag: "Questions",
+      faq_title: "AVANT DE DEMANDER",
+      faq_items: [
+        { q: "Offrez-vous du financement?", a: "Non — on revend des autos, on n'est pas un prêteur. La plupart des acheteurs paient comptant ou arrangent leur propre prêt avec leur banque. Utilisez notre estimateur sur chaque page d'auto pour voir le mensuel." },
+        { q: "Puis-je voir le Carfax?", a: "Absolument. Chaque auto vient avec son rapport d'historique — demandez-le nous et on vous l'envoie avant même votre visite." },
+        { q: "Où puis-je voir l'auto?", a: "On est basés à Montréal. Écrivez-nous ou appelez-nous pour réserver une visite — soirs et fins de semaine aussi." },
+        { q: "Y a-t-il une garantie?", a: "Chaque auto est entièrement inspectée et remise à neuf avant la vente, et la garantie d'usine restante est transférable le cas échéant. On est francs sur tout ce qu'on sait." },
+        { q: "Puis-je donner mon auto en échange?", a: "Oui — parlez-nous de votre auto et on l'intègre dans l'entente. Vérifiez sa valeur marchande sur Canadian Black Book d'abord pour partir sur une base juste." }
+      ],
+      ig_tag: "Suivez les flips",
+      ig_title: "VOYEZ LES AUTOS REVENDUES",
+      ig_desc: "Nouveaux arrivages, avant/après et célébrations de ventes — tout se passe d'abord sur Instagram.",
+      ig_cta: "SUIVRE @AK.FLIPS._"
+    },
+    alerts: {
+      tag: "Ne manquez aucun flip",
+      title: "SOYEZ AVERTI",
+      desc: "Dites-nous votre budget — on vous écrit dès qu'une auto sous votre prix arrive.",
+      name: "Votre nom",
+      email: "Courriel",
+      phone: "Téléphone (optionnel)",
+      max_price: "Budget max ($)",
+      submit: "AVERTISSEZ-MOI",
+      sending: "ENVOI...",
+      success_title: "VOUS ÊTES SUR LA LISTE",
+      success_desc: "On vous contactera dès qu'une auto correspondante arrive."
+    },
+    tradein: {
+      tag: "Une auto à vendre?",
+      title: "DONNEZ-LA EN ÉCHANGE",
+      desc: "Vous vendez déjà? Vérifiez la valeur marchande de votre auto sur Canadian Black Book, puis apportez-nous le chiffre — on vous fera une offre franche.",
+      cta: "VÉRIFIER LA VALEUR DE MON AUTO",
+      note: "Estimation gratuite • 2 minutes"
     }
   }
 };

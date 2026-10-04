@@ -102,11 +102,11 @@ The hero is video-ready today via `src/components/VideoBackground.tsx`:
 2. Drop it in `public/` → `public/hero-video.mp4`.
 3. In `src/App.tsx`, find the hero's `<VideoBackground` and change:
    ```tsx
-   <VideoBackground poster="/cars/nissan-rogue-2016.jpg" />
+   <VideoBackground poster="/cars/nissan-rogue-2016.webp" />
    ```
    to:
    ```tsx
-   <VideoBackground src="/hero-video.mp4" poster="/cars/nissan-rogue-2016.jpg" />
+   <VideoBackground src="/hero-video.mp4" poster="/cars/nissan-rogue-2016.webp" />
    ```
 4. Rebuild + push. The component handles autoplay/mute/loop/playsInline and
    falls back to the poster frame while loading. Keep the file small —

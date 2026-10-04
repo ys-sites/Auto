@@ -100,10 +100,15 @@ const notifyEmailCopy = () =>
 // --- Lead bus: tapping call / Instagram / email anywhere opens the lead modal.
 type LeadMode = 'call' | 'instagram' | 'email';
 
+interface LeadRequest {
+  mode: LeadMode;
+  source?: string; // optional custom source tag, e.g. 'contact_reserve'
+}
+
 const leadBus = {
-  listeners: new Set<(mode: LeadMode | null) => void>(),
-  open(mode: LeadMode) { this.listeners.forEach((fn) => fn(mode)); },
-  subscribe(fn: (mode: LeadMode | null) => void) {
+  listeners: new Set<(req: LeadRequest | null) => void>(),
+  open(mode: LeadMode, source?: string) { this.listeners.forEach((fn) => fn({ mode, source })); },
+  subscribe(fn: (req: LeadRequest | null) => void) {
     this.listeners.add(fn);
     return () => { this.listeners.delete(fn); };
   },
@@ -341,6 +346,11 @@ const Footer = () => {
 };
 
 const testimonials = [
+  // ═══════════════════════════════════════════════════════════════════════
+  // ⚠️ PLACEHOLDERS — the entries below are SAMPLE testimonials, not real
+  // buyer quotes. The client MUST replace them with real buyer names, cars
+  // and quotes before launch. Fake testimonials can violate ad standards.
+  // ═══════════════════════════════════════════════════════════════════════
   {
     name: "Karim B.",
     role: "en" as Language,
@@ -612,12 +622,14 @@ interface CarCardProps {
 
 const CarCard: React.FC<CarCardProps> = ({ car }) => {
   const { language } = useLanguage();
+  const isSold = car.status === 'sold';
+  const badge = language === 'fr' ? (car.badgeFr || car.badge) : car.badge;
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -8 }}
+      whileHover={isSold ? undefined : { y: -8 }}
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       className="h-full"
     >
@@ -640,14 +652,26 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
               <img
                 src={car.image}
                 alt={`${car.year} ${car.make} ${car.model}`}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${isSold ? 'grayscale' : ''}`}
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute top-4 left-4 z-10">
+              {isSold && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <span className="text-3xl font-black text-white uppercase tracking-[0.3em] italic border-4 border-white/80 px-6 py-2 -rotate-6">
+                    {language === 'fr' ? 'Vendue' : 'Sold'}
+                  </span>
+                </div>
+              )}
+              <div className="absolute top-4 left-4 z-10 flex gap-2">
                 <Badge className="crimson-bg text-white rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border-none pointer-events-none">
                   {car.year}
                 </Badge>
+                {badge && (
+                  <Badge className={`${isSold ? 'bg-white text-black' : 'bg-black/70 text-white border border-red-600/60'} rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest pointer-events-none`}>
+                    {badge}
+                  </Badge>
+                )}
               </div>
             </div>
             <div className="p-6 flex-1 flex flex-col justify-between relative z-10">
@@ -708,7 +732,7 @@ const TrustSection = () => {
 };
 
 const SellYourCar = () => {
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [partial, setPartial] = useState(false);
 
@@ -861,6 +885,26 @@ const SellYourCar = () => {
           </>
         )}
       </SectionReveal>
+
+      {/* Trade-in helper: link out to Canadian Black Book */}
+      <SectionReveal className="glass rounded-2xl border-white/5 p-8 sm:p-12 max-w-4xl mx-auto mt-16 sm:mt-24 text-center space-y-6">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto text-crimson">
+          <Tag className="w-7 h-7 sm:w-8 sm:h-8" />
+        </div>
+        <div className="space-y-3">
+          <p className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em]">{t('tradein.tag')}</p>
+          <h3 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tighter">{t('tradein.title')}</h3>
+          <p className="text-white/50 font-medium max-w-2xl mx-auto">{t('tradein.desc')}</p>
+        </div>
+        <div className="space-y-3">
+          <Button size="lg" className="px-10 sm:px-14 py-4 sm:py-6 bg-white text-black rounded-none font-black text-base sm:text-lg hover:bg-white/85 transition-all border-none uppercase tracking-tighter" asChild>
+            <a href="https://www.canadianblackbook.com" target="_blank" rel="noreferrer">
+              {t('tradein.cta')} <ArrowRight className="ml-2 w-5 h-5 inline" />
+            </a>
+          </Button>
+          <p className="text-[11px] text-white/30 font-bold uppercase tracking-widest">{t('tradein.note')}</p>
+        </div>
+      </SectionReveal>
     </div>
   );
 };
@@ -958,7 +1002,7 @@ const LEAD_ICON: Record<LeadMode, typeof Phone> = {
   email: Mail,
 };
 
-const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onClose: () => void }) => {
+const LeadModal = ({ open, mode, source, onClose }: { open: boolean; mode: LeadMode; source?: string; onClose: () => void }) => {
   const { t } = useLanguage();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -1000,7 +1044,7 @@ const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onC
     setSending(true);
     // Fire-and-forget: the lead is already on its way; the DM step is separate.
     submitLead(
-      { name: name.trim(), phone: phone.trim(), source: `contact_${mode}` },
+      { name: name.trim(), phone: phone.trim(), source: source || `contact_${mode}` },
       LEAD_SUBJECT[mode]
     ).catch(() => {});
     if (mode === 'instagram') {
@@ -1107,11 +1151,11 @@ const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onC
   );
 };
 
-// Rendered once at the app root — any leadBus.open(mode) call shows it.
+// Rendered once at the app root — any leadBus.open(mode, source?) call shows it.
 const GlobalLeadModal = () => {
-  const [mode, setMode] = useState<LeadMode | null>(null);
-  useEffect(() => leadBus.subscribe(setMode), []);
-  return <LeadModal open={mode !== null} mode={mode ?? 'call'} onClose={() => setMode(null)} />;
+  const [req, setReq] = useState<LeadRequest | null>(null);
+  useEffect(() => leadBus.subscribe(setReq), []);
+  return <LeadModal open={req !== null} mode={req?.mode ?? 'call'} source={req?.source} onClose={() => setReq(null)} />;
 };
 
 const GlobalToast = () => {
@@ -1144,6 +1188,107 @@ const GlobalToast = () => {
   );
 };
 
+// --- Recently sold strip: social proof + urgency. Sold cars stay visible.
+const RecentlySoldStrip = () => {
+  const { t } = useLanguage();
+  const sold = carData.filter((c) => c.status === 'sold');
+  if (sold.length === 0) return null;
+  return (
+    <section className="py-24 sm:py-32 border-t border-white/5 relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6">
+        <SectionReveal className="mb-10 sm:mb-14 space-y-4">
+          <h2 className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em]">{t('home.sold_tag')}</h2>
+          <h3 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase">{t('home.sold_title')}</h3>
+          <p className="text-white/40 max-w-xl font-medium">{t('home.sold_desc')}</p>
+        </SectionReveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 max-w-4xl">
+          {sold.map((car) => (
+            <SectionReveal key={car.id}>
+              <CarCard car={car} />
+            </SectionReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- FAQ accordion (EN/FR) — also fed to FAQPage JSON-LD in index.html.
+const FaqSection = () => {
+  const { t, language } = useLanguage();
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const items = translations[language].home.faq_items;
+  return (
+    <section className="py-24 sm:py-32 border-t border-white/5">
+      <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
+        <SectionReveal className="text-center mb-12 sm:mb-16 space-y-4">
+          <h2 className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em]">{t('home.faq_tag')}</h2>
+          <h3 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase">{t('home.faq_title')}</h3>
+        </SectionReveal>
+        <div className="space-y-3">
+          {items.map((item, i) => {
+            const open = openIdx === i;
+            return (
+              <SectionReveal key={i}>
+                <div className={`glass rounded-xl border overflow-hidden transition-colors ${open ? 'border-crimson/40' : 'border-white/5'}`}>
+                  <button
+                    onClick={() => setOpenIdx(open ? null : i)}
+                    className="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left"
+                    aria-expanded={open}
+                  >
+                    <span className="text-sm sm:text-lg font-black text-white uppercase tracking-tight">{item.q}</span>
+                    <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all ${open ? 'crimson-bg text-white rotate-45' : 'bg-white/5 text-white/50'}`}>
+                      <span className="text-xl font-black leading-none">+</span>
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {open && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-5 sm:px-6 pb-5 sm:pb-6 text-white/50 text-sm sm:text-base leading-relaxed font-medium">{item.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </SectionReveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- Instagram follow banner: closes the loop site → profile.
+const InstagramSection = () => {
+  const { t } = useLanguage();
+  return (
+    <section className="py-24 sm:py-32 border-t border-white/5 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.08)_0%,transparent_70%)] pointer-events-none" />
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <SectionReveal className="text-center max-w-3xl mx-auto space-y-6">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full crimson-bg flex items-center justify-center mx-auto shadow-[0_0_50px_rgba(220,38,38,0.4)]">
+            <Instagram className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+          </div>
+          <p className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em]">{t('home.ig_tag')}</p>
+          <h3 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter uppercase leading-[0.95]">{t('home.ig_title')}</h3>
+          <p className="text-white/50 text-base sm:text-lg font-medium">{t('home.ig_desc')}</p>
+          <Button size="lg" className="px-10 sm:px-14 py-4 sm:py-6 crimson-bg rounded-none font-black text-base sm:text-lg hover:bg-red-700 transition-all hover:scale-105 border-none uppercase tracking-tighter" asChild>
+            <a href={SITE.instagram} target="_blank" rel="noreferrer">
+              <Instagram className="w-5 h-5 mr-2" /> {t('home.ig_cta')}
+            </a>
+          </Button>
+        </SectionReveal>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
   const featuredCars = carData.slice(0, 5);
   const { t, language } = useLanguage();
@@ -1157,7 +1302,7 @@ const Home = () => {
           public/ (e.g. public/hero-video.mp4) and set src="/hero-video.mp4"
           on the VideoBackground below. One-line change. */}
       <section className="relative flex min-h-[100svh] w-full items-end overflow-hidden sm:items-center">
-        <VideoBackground poster="/cars/nissan-rogue-2016.jpg" />
+        <VideoBackground poster="/cars/nissan-rogue-2016.webp" />
 
         <div className="container relative z-10 mx-auto w-full px-5 pb-16 pt-32 sm:px-10 sm:pb-24">
           <motion.div
@@ -1277,6 +1422,8 @@ const Home = () => {
         </div>
       </section>
 
+      <RecentlySoldStrip />
+
       {/* How It Works teaser */}
       <section id="process" className="py-32 sm:py-40 relative px-4 sm:px-6 overflow-hidden border-t border-white/5">
         <div className="container mx-auto">
@@ -1331,10 +1478,14 @@ const Home = () => {
         </div>
       </section>
 
+      <FaqSection />
+
+      <InstagramSection />
+
       {/* Final CTA */}
       <section className="py-60 relative overflow-hidden bg-black flex items-center justify-center text-center">
         <div className="absolute inset-0 opacity-20">
-          <img src="/cars/toyota-corolla-2018.jpg" className="w-full h-full object-cover grayscale" loading="lazy" />
+          <img src="/cars/toyota-corolla-2018.webp" className="w-full h-full object-cover grayscale" loading="lazy" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-black to-charcoal" />
 
@@ -1367,6 +1518,62 @@ const Home = () => {
       <TestimonialSection />
       <ContactSection />
     </div>
+  );
+};
+
+// --- Price-drop / new-arrival alerts: tiny FormSubmit form.
+const PriceAlertsForm = () => {
+  const { t, language } = useLanguage();
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const payload: Record<string, unknown> = Object.fromEntries(formData.entries());
+    payload.source = 'price_alert';
+    try {
+      await submitLead(payload, 'Price alert signup — AK Flips website');
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  return (
+    <section className="mt-20 sm:mt-28">
+      <SectionReveal className="glass rounded-2xl border-white/5 p-8 sm:p-12 max-w-3xl mx-auto text-center space-y-6">
+        <div className="space-y-3">
+          <p className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em]">{t('alerts.tag')}</p>
+          <h3 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tighter">{t('alerts.title')}</h3>
+          <p className="text-white/50 font-medium max-w-xl mx-auto">{t('alerts.desc')}</p>
+        </div>
+        {status === 'success' ? (
+          <div className="space-y-3 py-4">
+            <BadgeCheck className="w-12 h-12 mx-auto text-crimson" />
+            <p className="text-xl font-black text-white uppercase tracking-tight">{t('alerts.success_title')}</p>
+            <p className="text-white/50 text-sm font-medium">{t('alerts.success_desc')}</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-left">
+            <Input name="name" placeholder={t('alerts.name')} required className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 text-base" />
+            <Input name="email" type="email" placeholder={t('alerts.email')} required className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 text-base" />
+            <Input name="phone" type="tel" placeholder={t('alerts.phone')} className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 text-base" />
+            <Input name="max_price" type="number" min={1000} step={500} placeholder={t('alerts.max_price')} required className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 text-base" />
+            <div className="sm:col-span-2">
+              <Button type="submit" disabled={status === 'loading'} className="w-full crimson-bg rounded-none font-black text-base uppercase tracking-widest py-6 hover:bg-red-700 transition-all border-none">
+                {status === 'loading' ? t('alerts.sending') : t('alerts.submit')}
+              </Button>
+              {status === 'error' && (
+                <p className="text-red-400 text-xs font-bold mt-3 text-center uppercase tracking-widest">
+                  {language === 'fr' ? "Échec de l'envoi — réessayez" : 'Send failed — try again'}
+                </p>
+              )}
+            </div>
+          </form>
+        )}
+      </SectionReveal>
+    </section>
   );
 };
 
@@ -1471,6 +1678,93 @@ const Inventory = () => {
           ))}
         </div>
       )}
+
+      <PriceAlertsForm />
+    </div>
+  );
+};
+
+// --- VDP CTA cluster: Call / Instagram DM / Reserve, repeated 3x on the car page.
+const VdpCtaCluster = ({ carId }: { carId: string }) => {
+  const { t } = useLanguage();
+  return (
+    <div className="space-y-4">
+      <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] text-center sm:text-left">
+        {t('detail.cta_cluster_title')}
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <Button
+          onClick={() => leadBus.open('call')}
+          className="crimson-bg rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-red-700 transition-all border-none"
+        >
+          <Phone className="w-4 h-4 mr-2" /> {t('detail.cta_call')}
+        </Button>
+        <Button
+          onClick={() => leadBus.open('instagram')}
+          className="glass rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-white/10 border-white/20 bg-transparent text-white transition-all"
+        >
+          <Instagram className="w-4 h-4 mr-2" /> {t('detail.cta_dm')}
+        </Button>
+        <Button
+          onClick={() => leadBus.open('call', `contact_reserve:${carId}`)}
+          className="bg-white text-black rounded-none font-black text-sm uppercase tracking-widest py-6 hover:bg-white/85 transition-all border-none"
+        >
+          <KeyRound className="w-4 h-4 mr-2" /> {t('detail.cta_reserve')}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+// --- Monthly payment estimator: pure client-side, estimate only.
+const PaymentEstimator = ({ price }: { price: number }) => {
+  const { t, language } = useLanguage();
+  const [down, setDown] = useState(Math.round(price * 0.1));
+  const [rate, setRate] = useState(7.99);
+  const [term, setTerm] = useState(60);
+
+  const principal = Math.max(price - down, 0);
+  const r = rate / 100 / 12;
+  const monthly = r > 0 ? (principal * r) / (1 - Math.pow(1 + r, -term)) : principal / term;
+
+  const sliderClass = "w-full accent-red-600 h-2 cursor-pointer";
+
+  return (
+    <div className="glass p-6 sm:p-8 rounded-2xl border-white/5 space-y-6">
+      <div>
+        <p className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em] mb-2">{t('detail.estimator_tag')}</p>
+        <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tighter italic">{t('detail.estimator_title')}</h4>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
+            <span>{t('detail.estimator_down')}</span>
+            <span className="text-white">${down.toLocaleString()}</span>
+          </div>
+          <input type="range" min={0} max={price} step={500} value={down} onChange={(e) => setDown(Number(e.target.value))} className={sliderClass} aria-label={t('detail.estimator_down')} />
+        </div>
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
+            <span>{t('detail.estimator_rate')}</span>
+            <span className="text-white">{rate.toFixed(2)}%</span>
+          </div>
+          <input type="range" min={0} max={20} step={0.25} value={rate} onChange={(e) => setRate(Number(e.target.value))} className={sliderClass} aria-label={t('detail.estimator_rate')} />
+        </div>
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-white/50">
+            <span>{t('detail.estimator_term')}</span>
+            <span className="text-white">{term} {t('detail.estimator_months')}</span>
+          </div>
+          <input type="range" min={12} max={84} step={12} value={term} onChange={(e) => setTerm(Number(e.target.value))} className={sliderClass} aria-label={t('detail.estimator_term')} />
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 pt-4 border-t border-white/10">
+        <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">{t('detail.estimator_result')}</p>
+        <p className="text-4xl sm:text-5xl font-black text-white italic tabular-nums">
+          ${monthly.toFixed(0)}<span className="text-lg text-white/40 not-italic font-bold">/{language === 'fr' ? 'mois' : 'mo'}</span>
+        </p>
+      </div>
+      <p className="text-[11px] text-white/30 leading-relaxed">{t('detail.estimator_disclaimer')}</p>
     </div>
   );
 };
@@ -1480,7 +1774,7 @@ const CarDetail = () => {
   const car = carData.find(c => c.id === id);
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [partial, setPartial] = useState(false);
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
 
   if (!car) return <div className="pt-40 text-center h-screen text-white">{language === 'fr' ? 'Auto non trouvée' : 'Car not found'}</div>;
 
@@ -1505,7 +1799,7 @@ const CarDetail = () => {
   };
 
   return (
-    <div className="pt-24 sm:pt-32 pb-12 sm:pb-20">
+    <div className="pt-24 sm:pt-32 pb-28 md:pb-20">
       <div className="container mx-auto px-4 sm:px-6">
         <Link to="/inventory" className="inline-flex items-center text-[10px] sm:text-sm text-crimson font-bold uppercase tracking-widest mb-6 sm:mb-10 hover:translate-x-1 transition-transform">
           <ArrowRight className="w-4 h-4 mr-2 rotate-180" /> {language === 'fr' ? "Retour à l'inventaire" : "Back to Inventory"}
@@ -1531,12 +1825,39 @@ const CarDetail = () => {
           {/* Details */}
           <div className="space-y-10">
             <div className="glass p-6 sm:p-8 rounded-2xl border-white/5">
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="flex items-center space-x-3 mb-4 flex-wrap gap-2">
                 <Badge className="crimson-bg text-white rounded px-2 py-0.5 text-[10px] uppercase font-bold tracking-widest border-none">{car.year}</Badge>
+                {(language === 'fr' ? car.badgeFr || car.badge : car.badge) && (
+                  <Badge className={`${car.status === 'sold' ? 'bg-white text-black' : 'bg-black/70 text-white border border-red-600/60'} rounded px-2 py-0.5 text-[10px] uppercase font-bold tracking-widest`}>
+                    {language === 'fr' ? (car.badgeFr || car.badge) : car.badge}
+                  </Badge>
+                )}
                 <div className="text-[9px] sm:text-[10px] uppercase font-bold text-white/40 tracking-wider font-mono">{language === 'fr' ? 'Inspectée et prête' : 'Inspected & Ready'}</div>
               </div>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter mb-4 uppercase italic leading-[0.9]">{car.make} <br /> <span className="crimson-text">{car.model}</span></h1>
-              <p className="text-3xl sm:text-4xl font-black text-white italic drop-shadow-[0_0_15px_rgba(220,38,38,0.3)] mb-8">${car.price.toLocaleString()}</p>
+              <p className="text-3xl sm:text-4xl font-black text-white italic drop-shadow-[0_0_15px_rgba(220,38,38,0.3)] mb-6">${car.price.toLocaleString()}</p>
+
+              {car.status === 'sold' && (
+                <div className="mb-6 bg-white/5 border border-white/20 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+                  <span className="text-2xl font-black text-white uppercase tracking-[0.2em] italic border-[3px] border-white/70 px-4 py-1 -rotate-2 self-start">
+                    {t('detail.sold')}
+                  </span>
+                  <div className="space-y-2">
+                    <p className="text-white/60 text-sm font-medium">{t('detail.sold_desc')}</p>
+                    <Button
+                      onClick={() => leadBus.open('call', `contact_similar:${car.id}`)}
+                      className="crimson-bg rounded-none font-black text-xs uppercase tracking-widest px-6 py-3 hover:bg-red-700 transition-all border-none"
+                    >
+                      {t('detail.sold_cta')}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* CTA cluster — spot 1 of 3 */}
+              <div className="mb-8">
+                <VdpCtaCluster carId={car.id} />
+              </div>
 
               <div className="grid grid-cols-2 gap-4 sm:gap-8 py-8 border-t border-white/10">
                 <div className="space-y-1">
@@ -1575,6 +1896,33 @@ const CarDetail = () => {
                 </div>
               </div>
             </div>
+
+            {/* CTA cluster — spot 2 of 3 */}
+            <div className="glass p-6 sm:p-8 rounded-2xl border-white/5">
+              <VdpCtaCluster carId={car.id} />
+            </div>
+
+            {/* What we fixed — the flip story */}
+            <div className="glass p-6 sm:p-8 rounded-2xl border-white/5 space-y-6">
+              <div>
+                <p className="text-[10px] sm:text-xs font-black text-crimson uppercase tracking-[0.5em] mb-2">{t('detail.what_fixed_tag')}</p>
+                <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tighter italic">{t('detail.what_fixed_title')}</h4>
+                <p className="text-white/50 text-sm sm:text-base font-medium mt-2">{t('detail.what_fixed_desc')}</p>
+              </div>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                {(language === 'fr' && car.reconditioningFr ? car.reconditioningFr : car.reconditioning).map((item, i) => (
+                  <li key={i} className="flex items-center text-xs sm:text-sm text-white/70 font-bold uppercase tracking-tight">
+                    <span className="w-6 h-6 rounded-full crimson-bg flex items-center justify-center mr-3 shrink-0">
+                      <BadgeCheck className="w-4 h-4 text-white" />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Payment estimator */}
+            <PaymentEstimator price={car.price} />
 
             {/* Contact Form */}
             <div className="glass p-5 sm:p-8 rounded-2xl border-white/5 shadow-2xl">
@@ -1643,6 +1991,49 @@ const CarDetail = () => {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Trust row + CTA cluster — spot 3 of 3 */}
+        <div className="mt-12 sm:mt-16 glass p-6 sm:p-10 rounded-2xl border-white/5 space-y-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {(translations[language].trust.items as { title: string; desc: string }[]).map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <BadgeCheck className="w-5 h-5 text-crimson shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs sm:text-sm font-black text-white uppercase tracking-tight">{item.title}</p>
+                  <p className="text-[11px] sm:text-xs text-white/40 font-medium mt-1">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <VdpCtaCluster carId={car.id} />
+        </div>
+      </div>
+
+      {/* Sticky mobile CTA bar — car detail pages only, thumb-reachable */}
+      <div className="fixed bottom-0 inset-x-0 z-40 md:hidden">
+        <div className="grid grid-cols-3 border-t border-white/10 bg-black/92 backdrop-blur-xl" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+          <button
+            onClick={() => leadBus.open('call')}
+            className="flex flex-col items-center justify-center gap-1 py-3 text-white active:bg-white/10 transition-colors"
+          >
+            <Phone className="w-5 h-5 crimson-text" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{t('detail.sticky_call')}</span>
+          </button>
+          <button
+            onClick={() => leadBus.open('instagram')}
+            className="flex flex-col items-center justify-center gap-1 py-3 text-white border-x border-white/10 active:bg-white/10 transition-colors"
+          >
+            <Instagram className="w-5 h-5 crimson-text" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{t('detail.sticky_dm')}</span>
+          </button>
+          <button
+            onClick={() => leadBus.open('call', `contact_reserve:${car.id}`)}
+            className="flex flex-col items-center justify-center gap-1 py-3 text-white crimson-bg active:bg-red-700 transition-colors"
+          >
+            <KeyRound className="w-5 h-5" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{t('detail.sticky_reserve')}</span>
+          </button>
         </div>
       </div>
     </div>
