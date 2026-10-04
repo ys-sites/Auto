@@ -25,6 +25,7 @@ export const SITE = {
   phone: '+1 (514) 812-1406',
   phoneHref: 'tel:+15148121406',
   instagram: 'https://www.instagram.com/ak.flips._',
+  instagramDm: 'https://ig.me/m/ak.flips._',
   instagramHandle: '@ak.flips._',
   city: 'Montreal, Quebec',
   logo: '/ak-flips-logo.jpg',
@@ -91,12 +92,29 @@ const notifyEvent = (event: string, subject: string, note: string) => {
   });
 };
 
-const notifyPhoneClick = () =>
-  notifyEvent('phone_click', '📞 Phone tap — AK Flips website', 'A visitor tapped the phone number on the AK Flips website.');
-const notifyInstagramClick = () =>
-  notifyEvent('instagram_click', '📸 Instagram visit — AK Flips website', 'A visitor clicked through to Instagram from the AK Flips website.');
 const notifyEmailCopy = () =>
   notifyEvent('email_copy', '✉️ Email copied — AK Flips website', 'A visitor copied the email address from the AK Flips website.');
+
+// --- Lead bus: tapping call / Instagram / email anywhere opens the lead modal.
+type LeadMode = 'call' | 'instagram' | 'email';
+
+const leadBus = {
+  listeners: new Set<(mode: LeadMode | null) => void>(),
+  open(mode: LeadMode) { this.listeners.forEach((fn) => fn(mode)); },
+  subscribe(fn: (mode: LeadMode | null) => void) {
+    this.listeners.add(fn);
+    return () => { this.listeners.delete(fn); };
+  },
+};
+
+const toastBus = {
+  listeners: new Set<(msg: string) => void>(),
+  show(msg: string) { this.listeners.forEach((fn) => fn(msg)); },
+  subscribe(fn: (msg: string) => void) {
+    this.listeners.add(fn);
+    return () => { this.listeners.delete(fn); };
+  },
+};
 
 // Honest partial-delivery note shown on success screens when only one inbox got the lead.
 const PartialNote = ({ partial }: { partial: boolean }) => {
@@ -265,8 +283,8 @@ const Footer = () => {
             </div>
             <p className="text-white/40 leading-relaxed font-medium">{t('footer.tagline')}</p>
             <div className="flex gap-5">
-              <a href={SITE.instagram} target="_blank" rel="noreferrer" aria-label="Instagram"
-                onClick={notifyInstagramClick}
+              <a href={SITE.instagramDm} target="_blank" rel="noreferrer" aria-label="Instagram"
+                onClick={(e) => { e.preventDefault(); leadBus.open('instagram'); }}
                 className="w-10 h-10 glass rounded-full flex items-center justify-center hover:crimson-bg hover:scale-110 transition-all duration-300 text-white">
                 <Instagram className="w-4 h-4" />
               </a>
@@ -294,8 +312,8 @@ const Footer = () => {
           <div className="space-y-10">
             <h4 className="text-[10px] font-black text-white/20 uppercase tracking-[.4em] mb-10">{t('nav.contact')}</h4>
             <div className="space-y-6">
-              <p className="text-xs font-bold text-white uppercase tracking-widest">{language === 'fr' ? 'Téléphone' : 'Phone'}: <a href={SITE.phoneHref} onClick={notifyPhoneClick} className="crimson-text block mt-2 text-base hover:underline">{SITE.phone}</a></p>
-              <p className="text-xs font-bold text-white uppercase tracking-widest">Email: <a href={`mailto:${SITE.email}`} onCopy={notifyEmailCopy} className="crimson-text block mt-2 text-base break-all hover:underline">{SITE.email}</a></p>
+              <p className="text-xs font-bold text-white uppercase tracking-widest">{language === 'fr' ? 'Téléphone' : 'Phone'}: <a href={SITE.phoneHref} onClick={(e) => { e.preventDefault(); leadBus.open('call'); }} className="crimson-text block mt-2 text-base hover:underline">{SITE.phone}</a></p>
+              <p className="text-xs font-bold text-white uppercase tracking-widest">Email: <a href={`mailto:${SITE.email}`} onClick={(e) => { e.preventDefault(); leadBus.open('email'); }} onCopy={notifyEmailCopy} className="crimson-text block mt-2 text-base break-all hover:underline">{SITE.email}</a></p>
               <p className="text-xs font-black text-white uppercase tracking-widest">{t('contact.info.location')}: <span className="text-white/40 block mt-2">{SITE.city}</span></p>
             </div>
           </div>
@@ -448,7 +466,7 @@ const ContactSection = () => {
                 {[
                   { icon: <Phone className="w-5 h-5 sm:w-6 sm:h-6" />, label: language === 'fr' ? 'Téléphone' : 'Phone', val: SITE.phone, href: SITE.phoneHref },
                   { icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6" />, label: "Email", val: SITE.email, href: `mailto:${SITE.email}` },
-                  { icon: <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />, label: "Instagram", val: SITE.instagramHandle, href: SITE.instagram },
+                  { icon: <Instagram className="w-5 h-5 sm:w-6 sm:h-6" />, label: "Instagram", val: SITE.instagramHandle, href: SITE.instagramDm },
                   { icon: <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />, label: t('contact.info.location'), val: SITE.city },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 sm:gap-6 group">
@@ -459,7 +477,11 @@ const ContactSection = () => {
                       <p className="text-[9px] sm:text-[10px] font-black text-white/30 uppercase tracking-widest">{item.label}</p>
                       {item.href ? (
                         <a href={item.href}
-                          onClick={item.href === SITE.phoneHref ? notifyPhoneClick : item.href === SITE.instagram ? notifyInstagramClick : undefined}
+                          onClick={(e) => {
+                            if (item.href === SITE.phoneHref) { e.preventDefault(); leadBus.open('call'); }
+                            else if (item.href === SITE.instagramDm) { e.preventDefault(); leadBus.open('instagram'); }
+                            else if (item.href.startsWith('mailto:')) { e.preventDefault(); leadBus.open('email'); }
+                          }}
                           onCopy={item.href.startsWith('mailto:') ? notifyEmailCopy : undefined}
                           target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="text-lg sm:text-xl font-bold text-white uppercase italic hover:text-crimson transition-colors break-all">{item.val}</a>
                       ) : (
@@ -515,7 +537,7 @@ const ContactSection = () => {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <Button onClick={() => setStatus('idle')} className="crimson-bg text-white rounded-none uppercase font-black tracking-widest h-10 sm:h-14 px-6 sm:px-10 text-xs sm:text-base border-none">{language === 'fr' ? 'Réessayer' : 'Try Again'}</Button>
                       <Button asChild variant="outline" className="border-white/10 text-white rounded-none uppercase font-black tracking-widest h-10 sm:h-14 px-6 sm:px-10 text-xs sm:text-base">
-                        <a href={SITE.instagram} target="_blank" rel="noreferrer" onClick={notifyInstagramClick}>Instagram</a>
+                        <a href={SITE.instagramDm} target="_blank" rel="noreferrer" onClick={(e) => { e.preventDefault(); leadBus.open('instagram'); }}>Instagram</a>
                       </Button>
                     </div>
                   </motion.div>
@@ -920,9 +942,21 @@ const HowItWorks = () => {
   );
 };
 
-// --- Call modal: hero "Call" button opens a name+phone form first.
-// On submit the lead goes to BOTH inboxes, then the phone call is placed.
-const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+// --- Universal lead modal: tapping call / Instagram / email opens a name+phone
+// form first. On submit the lead goes to BOTH inboxes, then the action runs.
+const LEAD_SUBJECT: Record<LeadMode, string> = {
+  call: '📞 Call request — AK Flips website',
+  instagram: '📸 Instagram chat request — AK Flips website',
+  email: '✉️ Email request — AK Flips website',
+};
+
+const LEAD_ICON: Record<LeadMode, typeof Phone> = {
+  call: Phone,
+  instagram: Instagram,
+  email: Mail,
+};
+
+const LeadModal = ({ open, mode, onClose }: { open: boolean; mode: LeadMode; onClose: () => void }) => {
   const { t } = useLanguage();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -932,18 +966,26 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
     setSending(true);
-    // Fire the lead without awaiting: awaiting would break the user-gesture
-    // chain and mobile browsers would block the tel: navigation below.
-    // The page stays alive behind the phone app, so the request completes.
+    // Fire-and-forget: keep the user gesture intact so the call/DM/mail app opens.
     submitLead(
-      { name: name.trim(), phone: phone.trim(), source: 'hero_call_button' },
-      '📞 Call request — AK Flips website'
-    ).catch(() => {
-      // Lead failed to send — the call still goes through.
-    });
+      { name: name.trim(), phone: phone.trim(), source: `contact_${mode}` },
+      LEAD_SUBJECT[mode]
+    ).catch(() => {});
     onClose();
-    window.location.href = SITE.phoneHref;
+    if (mode === 'call') {
+      window.location.href = SITE.phoneHref;
+    } else if (mode === 'instagram') {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(t('instagram.dmOpener')).catch(() => {});
+      }
+      toastBus.show(t('instagram.dmToast'));
+      window.open(SITE.instagramDm, '_blank', 'noopener,noreferrer');
+    } else {
+      window.location.href = `mailto:${SITE.email}`;
+    }
   };
+
+  const Icon = LEAD_ICON[mode];
 
   return (
     <AnimatePresence>
@@ -970,24 +1012,26 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
               <X className="w-5 h-5" />
             </button>
             <div className="w-12 h-12 rounded-full crimson-bg flex items-center justify-center mb-4 shadow-[0_0_25px_rgba(220,38,38,0.4)]">
-              <Phone className="w-6 h-6 text-white" />
+              <Icon className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-2xl font-black text-white uppercase tracking-tight">{t('callModal.title')}</h3>
-            <p className="text-white/50 text-sm mt-1 mb-6">{t('callModal.subtitle')}</p>
+            <h3 className="text-2xl font-black text-white uppercase tracking-tight">{t(`leadModal.${mode}.title`)}</h3>
+            <p className="text-white/50 text-sm mt-1 mb-6">{t(`leadModal.${mode}.subtitle`)}</p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
-                placeholder={t('callModal.name')}
+                placeholder={t('contact.form.name')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                autoComplete="name"
                 className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12 text-base"
               />
               <Input
-                placeholder={t('callModal.phone')}
+                placeholder={t('contact.form.phone')}
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
+                autoComplete="tel"
                 className="bg-white/5 border-white/15 text-white placeholder:text-white/30 h-12 text-base"
               />
               <Button
@@ -995,8 +1039,8 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
                 disabled={sending}
                 className="w-full crimson-bg rounded-none font-black text-base py-6 hover:bg-red-700 transition-all border-none"
               >
-                <Phone className="w-5 h-5 mr-2" />
-                {sending ? t('callModal.sending') : t('callModal.submit')}
+                <Icon className="w-5 h-5 mr-2" />
+                {sending ? t(`leadModal.${mode}.sending`) : t(`leadModal.${mode}.submit`)}
               </Button>
             </form>
           </motion.div>
@@ -1006,10 +1050,46 @@ const CallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
   );
 };
 
+// Rendered once at the app root — any leadBus.open(mode) call shows it.
+const GlobalLeadModal = () => {
+  const [mode, setMode] = useState<LeadMode | null>(null);
+  useEffect(() => leadBus.subscribe(setMode), []);
+  return <LeadModal open={mode !== null} mode={mode ?? 'call'} onClose={() => setMode(null)} />;
+};
+
+const GlobalToast = () => {
+  const [msg, setMsg] = useState<string | null>(null);
+  const timer = useRef<number | null>(null);
+  useEffect(() => {
+    const unsub = toastBus.subscribe((m: string) => {
+      setMsg(m);
+      if (timer.current) window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setMsg(null), 3000);
+    });
+    return () => {
+      unsub();
+      if (timer.current) window.clearTimeout(timer.current);
+    };
+  }, []);
+  return (
+    <AnimatePresence>
+      {msg && (
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 24 }}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] glass border border-white/15 rounded-full px-5 py-3 text-sm font-bold text-white shadow-2xl whitespace-nowrap max-w-[92vw] overflow-hidden text-ellipsis"
+        >
+          {msg}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const Home = () => {
   const featuredCars = carData.slice(0, 5);
   const { t, language } = useLanguage();
-  const [callOpen, setCallOpen] = useState(false);
   const steps = translations[language].process.steps;
   const stepIcons = [Search, Wrench, KeyRound];
 
@@ -1056,7 +1136,7 @@ const Home = () => {
               </Button>
               <Button
                 size="lg"
-                onClick={() => setCallOpen(true)}
+                onClick={() => leadBus.open('call')}
                 className="px-6 sm:px-10 py-4 sm:py-7 rounded-none font-black text-base sm:text-xl bg-white text-black hover:bg-white/85 transition-all hover:scale-105 border-none"
               >
                 <Phone className="w-5 h-5 mr-2" />
@@ -1234,7 +1314,6 @@ const Home = () => {
       <TrustSection />
       <TestimonialSection />
       <ContactSection />
-      <CallModal open={callOpen} onClose={() => setCallOpen(false)} />
     </div>
   );
 };
@@ -1577,6 +1656,8 @@ export default function App() {
 
         <Footer />
         <Analytics />
+        <GlobalLeadModal />
+        <GlobalToast />
       </div>
     </LanguageProvider>
   );

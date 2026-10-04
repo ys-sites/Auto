@@ -18,13 +18,29 @@ export const translations = {
       cta_learn: "HOW IT WORKS",
       cta_call: "CALL NOW"
     },
-    callModal: {
-      title: "Call AK Flips",
-      subtitle: "Drop your name and number first — then your call goes straight through.",
-      name: "Full Name",
-      phone: "Phone Number",
-      submit: "CALL NOW",
-      sending: "SENDING..."
+    leadModal: {
+      call: {
+        title: "Call AK Flips",
+        subtitle: "Drop your name and number first — then your call goes straight through.",
+        submit: "CALL NOW",
+        sending: "SENDING..."
+      },
+      instagram: {
+        title: "Chat on Instagram",
+        subtitle: "Leave your name and number — then we open the chat with a message ready to send.",
+        submit: "OPEN CHAT",
+        sending: "SENDING..."
+      },
+      email: {
+        title: "Email AK Flips",
+        subtitle: "Leave your name and number first — then your email app opens.",
+        submit: "OPEN EMAIL",
+        sending: "SENDING..."
+      }
+    },
+    instagram: {
+      dmOpener: "Hi! I found AK Flips online and I'm interested in one of your cars. Is it still available?",
+      dmToast: "Opening chat — message copied, just paste it 📋"
     },
     filters: {
       all: "All Cars",
@@ -119,13 +135,29 @@ export const translations = {
       cta_learn: "COMMENT ÇA MARCHE",
       cta_call: "APPELEZ-NOUS"
     },
-    callModal: {
-      title: "Appelez AK Flips",
-      subtitle: "Laissez votre nom et numéro — ensuite votre appel passe directement.",
-      name: "Nom complet",
-      phone: "Numéro de téléphone",
-      submit: "APPELER",
-      sending: "ENVOI..."
+    leadModal: {
+      call: {
+        title: "Appelez AK Flips",
+        subtitle: "Laissez votre nom et numéro — ensuite votre appel passe directement.",
+        submit: "APPELER",
+        sending: "ENVOI..."
+      },
+      instagram: {
+        title: "Discutez sur Instagram",
+        subtitle: "Laissez votre nom et numéro — on ouvre ensuite la discussion avec un message prêt à envoyer.",
+        submit: "OUVRIR LE CHAT",
+        sending: "ENVOI..."
+      },
+      email: {
+        title: "Écrivez à AK Flips",
+        subtitle: "Laissez votre nom et numéro — ensuite votre application courriel s'ouvre.",
+        submit: "OUVRIR COURRIEL",
+        sending: "ENVOI..."
+      }
+    },
+    instagram: {
+      dmOpener: "Salut ! J'ai trouvé AK Flips en ligne et je suis intéressé par une de vos autos. Est-elle encore disponible ?",
+      dmToast: "Ouverture du chat — message copié, collez-le 📋"
     },
     filters: {
       all: "Toutes les autos",
