@@ -1,26 +1,31 @@
-# AutoElite Motors 🚗💨
+# AK Flips 🚗
 
-Premium used car dealership website specializing in high-performance and luxury vehicles.
+Montreal's used-car flipper — hand-picked, fully inspected & reconditioned used cars, priced fairly and sold fast.
 
 ## 🌟 Features
-- **Premium UX**: Dark Luxury design with Crimson accents.
-- **Dynamic Inventory**: 25+ curated luxury vehicles.
-- **Advanced Filtering**: Filter by price, type, and search terms.
+- **Flipper-first UX**: Dark design with crimson accents matching the AK Flips brand.
+- **Curated Inventory**: 5 hand-picked used cars with real photos, filters and search.
+- **How It Works**: We hunt → we recondition → you drive.
+- **Sell Us Your Car**: We buy clean used cars directly.
+- **Lead capture**: All forms (contact, car inquiry, sell-your-car) post via FormSubmit AJAX to the owner's inbox — no CRM needed.
+- **Bilingual**: Full EN/FR toggle.
 - **Animated Interface**: Smooth scroll reveals and page transitions using `motion/react`.
 - **Responsive Design**: Optimized for all devices.
-- **Inquiry System**: Connects via 21st.dev API for dealer contact.
 
 ## 🛠️ Stack
 - **Frontend**: React 19 + Vite + Tailwind CSS
 - **Components**: shadcn/ui
 - **Animations**: motion/react (framer-motion)
-- **Backend**: Express.js
-- **API**: Custom Car Inventory API + 21st.dev Integration
+- **Forms**: FormSubmit AJAX (https://formsubmit.co/ajax/...)
 
 ## 🚀 Getting Started
 1. Install dependencies: `npm install`
-2. Configure `.env`: Use `.env.example` as a template.
-3. Start development server: `npm run dev`
+2. Start development server: `npm run dev`
+
+## 📝 Notes
+- Car inventory lives in `src/data/cars.ts` — photos in `public/cars/`.
+- Site contact info (email, phone, Instagram) is centralized in the `SITE` constant in `src/App.tsx`.
+- First FormSubmit submission triggers an activation email to EACH inbox (client + Mohamed) — both must be clicked before leads arrive.
 
 ## 📄 License
 MIT
