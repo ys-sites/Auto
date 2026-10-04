@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, animate } from 'motion/react';
-import { Menu, Phone, Mail, MapPin, Instagram, Search, ArrowRight, ShieldCheck, Zap, BadgeCheck, Wrench, KeyRound, CircleAlert } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, Instagram, Search, ArrowRight, ShieldCheck, Zap, BadgeCheck, Wrench, KeyRound, CircleAlert } from 'lucide-react';
 
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
