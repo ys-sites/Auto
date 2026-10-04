@@ -37,7 +37,9 @@ export const SITE = {
 // before leads start arriving.
 
 const FORM_ENDPOINTS = [
-  'https://formsubmit.co/ajax/Abdullahkhawaja2004@gmail.com',
+  // TEST MODE (2026-10-03): client's inbox disabled while Mohamed tests delivery.
+  // To re-enable, uncomment the line below.
+  // 'https://formsubmit.co/ajax/Abdullahkhawaja2004@gmail.com',
   'https://formsubmit.co/ajax/Sharafath2001@hotmail.com',
 ];
 
