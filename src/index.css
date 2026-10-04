@@ -49,6 +49,21 @@
   }
 }
 
+/* Slow ken-burns drift for the hero image fallback (VideoBackground) */
+@keyframes kenburns {
+  from {
+    transform: scale(1) translateY(0);
+  }
+  to {
+    transform: scale(1.12) translateY(-2%);
+  }
+}
+
+.kenburns {
+  animation: kenburns 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
 /* Texture Overlay */
 .grain-overlay {
   position: fixed;

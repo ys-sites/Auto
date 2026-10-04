@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, animate } from 'motion/react';
-import { Menu, X, Phone, Mail, MapPin, Instagram, Search, ArrowRight, ShieldCheck, Zap, BadgeCheck, Wrench, KeyRound, CircleAlert } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, Instagram, Search, ArrowRight, ShieldCheck, Zap, BadgeCheck, Wrench, KeyRound, CircleAlert, Tag } from 'lucide-react';
 
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
@@ -12,9 +12,9 @@ import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { Analytics } from '@vercel/analytics/react';
 import { Language, translations } from './locales/translations';
 import BorderGlow from './components/BorderGlow/BorderGlow';
+import VideoBackground from './components/VideoBackground';
 import MagicBento from './components/MagicBento/MagicBento';
 import ElasticSlider from './components/ElasticSlider/ElasticSlider';
-import Plasma from './components/Plasma/Plasma';
 
 // --- Site constants (single source of truth) ---
 
@@ -1152,81 +1152,76 @@ const Home = () => {
 
   return (
     <div className="space-y-0 pt-16 sm:pt-20 overflow-x-hidden relative">
-      {/* Hero */}
-      <section className="h-auto min-h-[auto] py-16 sm:h-[calc(100vh-80px)] sm:min-h-[750px] md:min-h-[850px] md:pb-40 lg:min-h-[700px] lg:pb-0 flex items-center px-4 sm:px-10 gap-12 relative w-full z-10 overflow-hidden">
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 opacity-100 hidden sm:block">
-            <Plasma color="#DC2626" speed={0.6} scale={1.2} opacity={0.3} mouseInteractive={true} />
-          </div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#1a1a1a_90%)]" />
-        </div>
-        <div className="container mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-12 w-full h-full relative z-10">
+      {/* Hero — mobile-first, video-ready.
+          To enable the video background: drop an optimized MP4 into
+          public/ (e.g. public/hero-video.mp4) and set src="/hero-video.mp4"
+          on the VideoBackground below. One-line change. */}
+      <section className="relative flex min-h-[100svh] w-full items-end overflow-hidden sm:items-center">
+        <VideoBackground poster="/cars/nissan-rogue-2016.jpg" />
+
+        <div className="container relative z-10 mx-auto w-full px-5 pb-16 pt-32 sm:px-10 sm:pb-24">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-6 sm:space-y-10 text-center lg:text-left lg:pt-0 md:mb-12 lg:mb-0 relative z-20"
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            className="max-w-2xl"
           >
-            <div className="inline-block px-3 py-1 glass rounded text-[10px] sm:text-xs font-bold uppercase tracking-widest crimson-text shadow-[0_0_20px_rgba(220,38,38,0.2)]">
-              {t('hero.tag')}
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-red-600/40 bg-black/50 px-4 py-1.5 backdrop-blur">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-600" />
+              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/90 sm:text-xs">
+                {t('hero.tag')}
+              </span>
             </div>
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.95] tracking-tighter text-white uppercase pointer-events-none">
-              {t('hero.title_part1')}<br /> <span className="crimson-text text-glow italic">{t('hero.title_extraordinary')}</span>
+
+            <h1 className="text-[16vw] font-black uppercase leading-[0.9] tracking-tighter text-white sm:text-7xl lg:text-8xl">
+              {t('hero.title_part1')}
+              <br />
+              <span className="italic crimson-text text-glow">{t('hero.title_extraordinary')}</span>
             </h1>
-            <p className="text-white/60 text-base sm:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed font-medium">
+
+            <p className="mt-5 max-w-md text-base font-medium leading-relaxed text-white/70 sm:text-lg">
               {t('hero.description')}
             </p>
-            <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 pt-4">
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              {[
+                { icon: ShieldCheck, label: t('hero.chip_inspected') },
+                { icon: BadgeCheck, label: t('hero.chip_title') },
+                { icon: Tag, label: t('hero.chip_price') },
+              ].map((chip, i) => (
+                <span
+                  key={i}
+                  className="glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white/80 sm:text-xs"
+                >
+                  <chip.icon className="h-3.5 w-3.5 crimson-text" />
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Button
                 size="lg"
-                className="px-6 sm:px-10 py-4 sm:py-7 crimson-bg rounded-none font-black text-base sm:text-xl hover:bg-red-700 transition-all hover:scale-105 border-none shadow-[0_20px_50px_rgba(220,38,38,0.3)]"
+                className="h-14 w-full px-8 crimson-bg rounded-none font-black text-base hover:bg-red-700 transition-all border-none shadow-[0_20px_50px_rgba(220,38,38,0.3)] sm:w-auto sm:text-lg"
                 asChild
               >
                 <Link to="/inventory">{t('hero.cta_showroom')}</Link>
               </Button>
               <Button
                 size="lg"
-                className="px-6 sm:px-10 py-4 sm:py-7 glass rounded-none font-black text-base sm:text-xl hover:bg-white/10 border-white/20 bg-transparent text-white transition-all"
-                asChild
-              >
-                <Link to="/how-it-works">{t('hero.cta_learn')}</Link>
-              </Button>
-              <Button
-                size="lg"
                 onClick={() => leadBus.open('call')}
-                className="px-6 sm:px-10 py-4 sm:py-7 rounded-none font-black text-base sm:text-xl bg-white text-black hover:bg-white/85 transition-all hover:scale-105 border-none"
+                className="h-14 w-full px-8 rounded-none font-black text-base bg-white text-black hover:bg-white/85 transition-all border-none sm:w-auto sm:text-lg"
               >
-                <Phone className="w-5 h-5 mr-2" />
+                <Phone className="h-5 w-5 mr-2" />
                 {t('hero.cta_call')}
               </Button>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 1.5, ease: "circOut" }}
-            className="hidden lg:flex flex-1 h-[600px] rounded-[3rem] overflow-hidden relative border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] group"
-          >
-            <img
-              src="/cars/nissan-rogue-2016.jpg"
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-              alt="2016 Nissan Rogue SV"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent opacity-80" />
-            <div className="absolute bottom-16 left-16">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1, duration: 1 }}
-              >
-                <p className="text-sm crimson-text font-black uppercase tracking-[.4em] mb-2">{t('detail.just_flipped')}</p>
-                <h3 className="text-4xl font-black text-white uppercase italic tracking-tighter">2016 NISSAN ROGUE <br /> SV — $12,900</h3>
-              </motion.div>
-            </div>
-            <Link to="/cars/5" className="absolute top-10 right-10 w-20 h-20 glass rounded-full flex items-center justify-center animate-pulse border border-white/20 hover:crimson-bg transition-colors">
-              <ArrowRight className="w-8 h-8 text-white -rotate-45" />
+            <Link
+              to="/how-it-works"
+              className="mt-6 inline-block text-xs font-bold uppercase tracking-[0.2em] text-white/50 underline-offset-4 transition-colors hover:text-white hover:underline sm:text-sm"
+            >
+              {t('hero.cta_learn')} →
             </Link>
           </motion.div>
         </div>

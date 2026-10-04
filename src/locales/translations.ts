@@ -16,7 +16,10 @@ export const translations = {
       description: "Hand-picked, fully inspected and reconditioned used cars — priced fairly and sold fast. No dealership games, just good cars.",
       cta_showroom: "BROWSE CARS",
       cta_learn: "HOW IT WORKS",
-      cta_call: "CALL NOW"
+      cta_call: "CALL NOW",
+      chip_inspected: "Fully inspected",
+      chip_title: "Clean title",
+      chip_price: "Fair price"
     },
     leadModal: {
       call: {
@@ -137,7 +140,10 @@ export const translations = {
       description: "Des voitures d'occasion triées sur le volet, entièrement inspectées et remises à neuf — à prix juste, vendues rapidement. Sans jeux de concessionnaire.",
       cta_showroom: "VOIR LES AUTOS",
       cta_learn: "COMMENT ÇA MARCHE",
-      cta_call: "APPELEZ-NOUS"
+      cta_call: "APPELEZ-NOUS",
+      chip_inspected: "Entièrement inspectées",
+      chip_title: "Historique vérifié",
+      chip_price: "Prix juste"
     },
     leadModal: {
       call: {
